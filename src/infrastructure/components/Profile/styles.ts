@@ -38,27 +38,6 @@ const useStyles = makeStyles((theme: Theme) =>
                 width: "95%",
                 margin: "2em"
             },
-            "& div.inline": {
-                marginTop: theme.spacing(4),
-                display: "flex",
-                justifyContent: "center",
-                flexWrap: "wrap",
-                marginBottom: theme.spacing(1),
-                "& .icon": {
-                    fontSize: 30,
-                    marginLeft: 5,
-                },
-                "& .icon.large": {
-                    fontSize: 30,
-                    marginLeft: 0,
-                },
-                "& .iconned": {
-                    paddingLeft: 30,
-                    paddingRight: 30,
-                    display: "flex",
-                    gap: "5px"
-                },
-            },
             "& .paper": {
                 minHeight: 50,
                 textAlign: "left",
@@ -92,6 +71,29 @@ const useStyles = makeStyles((theme: Theme) =>
                 },
             },
         },
+        inline: {
+            marginTop: theme.spacing(4),
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            marginBottom: theme.spacing(1),
+            "& .icon": {
+                fontSize: 30,
+                marginLeft: 5,
+            },
+            "& .icon.large": {
+                fontSize: 30,
+                marginLeft: 0,
+            },
+            "& .iconned": {
+                paddingLeft: 30,
+                paddingRight: 30,
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center"
+                //gap: "5px"
+            },
+        },
         pentagon: {
             width: "250px",
             height: "250px",
@@ -99,8 +101,8 @@ const useStyles = makeStyles((theme: Theme) =>
           },
         skills: {
             position: "relative",
-            backgroundColor: "yellow",
-            display: "block"
+            display: "block",
+            margin: 0
         }
     })
 );

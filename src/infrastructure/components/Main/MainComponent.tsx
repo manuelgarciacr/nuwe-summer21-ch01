@@ -23,7 +23,7 @@ import Profile from '../Profile/ProfileComponent';
 
 import logo from '../../assets/img/Nuwe_Mono 1.png';
 import letters from '../../assets/img/Nuwe_Letters.png';
-import { HomeIcon, WorkIcon, ProfileIcon, ContactIcon, MenuIcon } from '../Icons/Icons';
+import { HomeIcon, WorkIcon, ProfileIcon, ContactIcon } from '../Icons/Icons';
 
 const Main = (props: any) => {
     // const { window } = props;
@@ -34,7 +34,9 @@ const Main = (props: any) => {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-
+    const closeDrawer = () => {
+        setMobileOpen(false);
+    };
     const drawer = (
         <div>
             <div className={classes.toolbar} >
@@ -43,20 +45,20 @@ const Main = (props: any) => {
             </div>
             <Divider />
             <List>
-                <ListItem button key={'panel'} component={Link} to="/panel">
+                <ListItem button key={'panel'} onClick={closeDrawer} component={Link} to="/panel">
                     <ListItemIcon><HomeIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
                     <ListItemText primary={<Typography variant="subtitle1">Panel</Typography>} />
                 </ListItem>
-                <ListItem button key={'enterprises'} component={Link} to="/enterprises">
+                <ListItem button key={'enterprises'} onClick={closeDrawer} component={Link} to="/enterprises">
                     <ListItemIcon><WorkIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
                     {/* <ListItemText primary={<Typography variant="subtitle1" style={{ color: '#ff6f00' }}>Empresas</Typography>}/> */}
                     <ListItemText primary={<Typography variant="subtitle1">Empresas</Typography>} />
                 </ListItem>
-                <ListItem button key={'profile'} component={Link} to="/profile">
+                <ListItem button key={'profile'} onClick={closeDrawer} component={Link} to="/profile">
                     <ListItemIcon><ProfileIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
                     <ListItemText primary={<Typography variant="subtitle1">Perfil</Typography>} />
                 </ListItem>
-                <ListItem button key={'contact'} component={Link} to="/contact">
+                <ListItem button key={'contact'} onClick={closeDrawer} component={Link} to="/contact">
                     <ListItemIcon><ContactIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
                     <ListItemText primary={<Typography variant="subtitle1">Contacto</Typography>} />
                 </ListItem>

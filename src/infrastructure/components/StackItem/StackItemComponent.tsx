@@ -1,19 +1,15 @@
 import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-// import { useTheme } from "@material-ui/core/styles";
 import useStyles from "./styles";
 
 const StackItem = (props: { name: string, x?: number, y?: number }) => {
     const offset = getOffset(props.name);
     const classes = useStyles(offset, props.x, props.y)();
     const absolute = props.x || props.y || false;
-    //const theme = useTheme();
+
     return (
         <Paper className={`${absolute ? classes.absoluteCard : ''}`}>
-            {/* <Card className={`${classes.card} ${absolute ? classes.absoluteCard : ''}`}>
-            </Card> */}
             <Card className={classes.card}>
             </Card>            
             {absolute && <>

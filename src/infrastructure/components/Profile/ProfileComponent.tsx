@@ -17,17 +17,15 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
 import StackItem from "../StackItem/StackItemComponent";
 import Hidden from "@material-ui/core/Hidden";
-import React, { useState } from "react";
 import useWindowDimensions from "../Hooks/useWindowDimensions";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const Profile = () => {
     const theme = useTheme();
     const classes = useStyles();
-    const { height, width } = useWindowDimensions();
+    const {width } = useWindowDimensions();
     const notMobile = useMediaQuery(theme.breakpoints.up('sm'));
 
     const calcPentagon = (n: number, r: number) => {
@@ -40,10 +38,10 @@ const Profile = () => {
         return penta;
     }
     const offsetX = (width - (notMobile ? 290 : 0)) / 2 - 50;
-    const radio = offsetX > 250 ? 250 : offsetX 
+    const radio = offsetX > 250 ? 250 : offsetX
     const offsetY = 70;
-    const penta = calcPentagon(5, radio );
-    
+    const penta = calcPentagon(5, radio);
+
     return (
         <>
             <Card className={classes.generalCard}>
@@ -55,11 +53,11 @@ const Profile = () => {
                 <CardContent className={classes.generalCardContent}>
                     <Avatar className={classes.generalCardAvatar} alt="Avatar del usuario" src={avatar} />
                     <Typography variant="h4" className={classes.generalCardName}>Manuel</Typography>
-                    <div className="inline">
+                    <div className={classes.inline}>
                         <Typography variant="h6">johnnd@micorreo.com | +34 666 666 666</Typography>
                     </div>
                     <Typography variant="h6">Fullstack. Más de 15 años programando software de gestión para grandes empresas. Estos últimos años he estado reciclando mis conocimientos: Angular, React, React native, Cordova, Java, Android, Nodejs, BBDD, etc</Typography>
-                    <div className="inline" >
+                    <div className={classes.inline} >
                         <GithubIcon className="icon" viewBox="0 0 150 150" />
                         <LinkedInIcon className="icon" viewBox="0 0 150 150" />
                         <GitlabIcon className="icon" viewBox="0 0 150 150" />
@@ -90,8 +88,8 @@ const Profile = () => {
             </Card>
             <Card className={classes.generalCard}>
                 <CardContent className={classes.generalCardContent}>
-                    <Typography variant="h4" className={classes.generalCardName}>Sobre el puesto que busca Manuel</Typography>
-                    <div className="inline" >
+                    <Typography variant="h4" className={classes.generalCardName}>Sobre el puesto que busca Manuel:</Typography>
+                    <div className={classes.inline} >
                         <div className="iconned">
                             <LocationIcon className="icon" viewBox="0 0 101 100" />
                             <Typography variant="h6">Barcelona, España</Typography>
@@ -106,7 +104,7 @@ const Profile = () => {
                         </div>
                     </div>
                     <div className={classes.separator}></div>
-                    <div className="inline" >
+                    <div className={classes.inline} >
                         <div className="iconned">
                             <FlightTakeoffIcon className="icon" />
                             <Typography variant="h6">Disponibilidad para viajar</Typography>
@@ -122,34 +120,57 @@ const Profile = () => {
                     </div>
                 </CardContent>
             </Card>
-            <Paper className={classes.skills}>
-                <img className={classes.pentagon} 
-                    src={Pentagon} 
-                    alt="Pentágono"
-                    style={{width: radio, 
-                        transform: `translate(
-                            ${offsetX - (radio/2) + 50}px, 
-                            ${offsetY + radio - 90}px
-                        )`
-                    }}>
-                </img>
-                {["JAVA", "ANGULAR", "CSS 3", "HTML 5", "MYSQL"].map((value, i) => {
-                    console.log(value, i, penta[i][0], penta[i][1]);
-                    
-                    if (penta[i][1] >= 0)
-                        penta[i][1] = radio - penta[i][1];
-                    else {
-                        penta[i][1] *= -1;
-                        penta[i][1] += radio;
-                    }
-                    if (i === 0)
-                        penta[i][1] -= 50;
-                    return (
-                        <StackItem name={value} 
-                            x={offsetX + penta[i][0]} 
-                            y={offsetY + penta[i][1]}/>
-                    )
-                })}
+            <div className={classes.inline} >
+                <Typography variant="h6" style={{ color: theme.palette.primary.dark, textDecorationLine: "underline" }}>Perfil Nuwe</Typography>
+                <Typography variant="h6" style={{ marginLeft: "2rem" }}>Timeline CV</Typography>
+                <Typography variant="h6" style={{ marginLeft: "2rem" }}>Social</Typography>
+            </div>
+            <div className={classes.separator}></div>
+            {/* <Hidden smUp implementation="css">
+                <Typography className="caption" variant="h6">Hard skills validadas en NUWE</Typography>
+            </Hidden> */}
+            <Hidden xsDown implementation="css">
+                <div style={{textAlign: "center"}}>
+                    <Typography variant="h6">Perfil validado en NUWE de Manuel:</Typography>
+                    <Typography variant="h6">17/2500u/6000pts</Typography>
+                </div>
+            </Hidden>
+            <div style={{textAlign: "center"}}>
+                <Typography variant="h6" className="caption">Hard skills validadas en NUWE</Typography>            
+            </div>
+            <Paper className={classes.skills} style={{height: 3 * radio + 100}} variant="outlined" >
+                <div style={{textAlign: "center"}}>
+                    <Typography variant="h6">Top 5 hard skills</Typography>
+                </div>
+                {/* <Paper className={ `className="container" ${classes.skills}`} style={{height: 3 * radio}}> */}
+                    <img className={classes.pentagon}
+                        src={Pentagon}
+                        alt="Pentágono"
+                        style={{
+                            width: radio,
+                            transform: `translate(
+                                ${offsetX - (radio / 2) + 50}px, 
+                                ${offsetY + radio - 90}px
+                            )`
+                        }}>
+                    </img>
+                    {["JAVA", "ANGULAR", "CSS 3", "HTML 5", "MYSQL"].map((value, i) => {
+
+                        if (penta[i][1] >= 0)
+                            penta[i][1] = radio - penta[i][1];
+                        else {
+                            penta[i][1] *= -1;
+                            penta[i][1] += radio;
+                        }
+                        if (i === 0)
+                            penta[i][1] -= 50;
+                        return (
+                            <StackItem name={value}
+                                x={offsetX + penta[i][0]}
+                                y={offsetY + penta[i][1]} />
+                        )
+                    })}
+                {/* </Paper> */}
             </Paper>
         </>
     )

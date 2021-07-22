@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: "flex",
             padding: 0
-        },
+        }, 
         separator: {
             borderWidth: 1,
             borderStyle: "solid",
@@ -13,6 +13,13 @@ const useStyles = makeStyles((theme: Theme) =>
             opacity: .3,
             borderColor: theme.palette.primary.main,
             marginTop: theme.spacing(2)
+        },
+        loadingError: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: 400
         },
         generalCard: {
             padding: 0
@@ -90,8 +97,8 @@ const useStyles = makeStyles((theme: Theme) =>
                 paddingRight: 30,
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "center"
-                //gap: "5px"
+                justifyContent: "center",
+                gap: "5px"
             },
         },
         pentagon: {

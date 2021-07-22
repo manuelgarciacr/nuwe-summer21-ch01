@@ -1,21 +1,36 @@
 import Card from "@material-ui/core/Card";
 import Paper from "@material-ui/core/Paper";
+import { withStyles } from "@material-ui/core/styles";
+import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 
-const StackItem = (props: { name: string, x?: number, y?: number }) => {
-    const offset = getOffset(props.name);
-    const classes = useStyles(offset, props.x, props.y)();
-    const absolute = props.x || props.y || false;
+const GreenTooltip = withStyles({
+    tooltip: {
+        backgroundColor: "darkgreen",
+        fontSize: 18
+    },
+    arrow: {
+        color: "darkgreen",
+    }
+})(Tooltip);
 
+const StackItem = (props: { name: string, points?: number, topPct?: number, x?: number, y?: number }) => {
+    const {name, points, topPct, x, y} = props;
+    const offset = getOffset(name);
+    const classes = useStyles(offset, x, y)();
+    const absolute = x || y || false;
     return (
         <Paper className={`${absolute ? classes.absoluteCard : ''}`}>
-            <Card className={classes.card}>
-            </Card>            
-            {absolute && <>
-                <Typography className={classes.message}>1200 pts</Typography>
-                <Typography className={classes.message}>Top 10%</Typography>
-            </>}
+            <GreenTooltip title={name} arrow>
+                <Card className={`${offset[0] !== 1000 ? classes.card : classes.cardEmpty}`} />
+            </GreenTooltip>
+            {points && 
+                <Typography className={classes.message}>{new Intl.NumberFormat().format(points)} pts</Typography>
+            }
+            {topPct &&
+                <Typography className={classes.message}>Top {new Intl.NumberFormat().format(topPct)}%</Typography>
+            }        
         </Paper>
     )
 }
@@ -23,69 +38,69 @@ const StackItem = (props: { name: string, x?: number, y?: number }) => {
 const getOffset = (name: string) => {
     const stacks: { [k: string]: [number, number] } = {
         "C#": [0, 0],
-        "GOLANG": [1, 0],
-        "GRAPHQL": [2, 0],
-        "JAVA": [3, 0],
-        "NODE JS": [4, 0],
+        "Golang": [1, 0],
+        "GraphQL": [2, 0],
+        "Java": [3, 0],
+        "Node.js": [4, 0],
         "PHP": [5, 0],
-        "PYTHON": [6, 0],
-        "RUST": [7, 0],
-        "SPRING": [8, 0],
+        "Python": [6, 0],
+        "Rust": [7, 0],
+        "Spring": [8, 0],
         //
-        "AJAX": [0, 1],
-        "ANGULAR": [1, 1],
-        "CSS 3": [2, 1],
-        "HTML 5": [3, 1],
-        "JAVA SCRIPT": [4, 1],
-        "REACT": [5, 1],
-        "TYPE SCRIPT": [6, 1],
+        "Ajax": [0, 1],
+        "Angular": [1, 1],
+        "CSS3": [2, 1],
+        "HTML5": [3, 1],
+        "Javascript": [4, 1],
+        "React": [5, 1],
+        "Typescript": [6, 1],
         "VUE": [7, 1],
         //
-        "AMAZON WEB": [0, 2],
-        "AZURE": [1, 2],
-        "DOCKER": [2, 2],
-        "FIREBASE": [3, 2],
-        "GOOGLE CLOUD": [4, 2],
-        "JENKINS": [5, 2],
-        "KUBERNETES": [6, 2],
+        "Amazon Web": [0, 2],
+        "Azure": [1, 2],
+        "Docker": [2, 2],
+        "Firebase": [3, 2],
+        "Google Cloud": [4, 2],
+        "Jenkins": [5, 2],
+        "Kubernetes": [6, 2],
         //
-        "BOLTDB": [0, 3],
-        "CASSANDRADB": [1, 3],
-        "COUCHDB": [2, 3],
-        "MARIADB": [3, 3],
-        "MEMCACHE": [4, 3],
-        "MONGODB": [5, 3],
-        "MS SQL SERVER": [6, 3],
-        "MYSQL": [7, 3],
-        "POSTGRESQL": [8, 3],
-        "REDIS": [9, 3],
+        "BoltDB": [0, 3],
+        "CassandraDB": [1, 3],
+        "CouchDB": [2, 3],
+        "MariaDB": [3, 3],
+        "Memcache": [4, 3],
+        "MongoDB": [5, 3],
+        "MS SQL Server": [6, 3],
+        "MySQL": [7, 3],
+        "PostgreSQL": [8, 3],
+        "Redis": [9, 3],
         //
-        "CLAIR": [0, 4],
-        "NIGHT WATCH": [1, 4],
-        "POSTMAN": [2, 4],
-        "SONAR QUBE": [3, 4],
-        "VISUAL STUDIO": [4, 4],
+        "Clair": [0, 4],
+        "Night Watch": [1, 4],
+        "Postman": [2, 4],
+        "SonarQube": [3, 4],
+        "Visual Studio": [4, 4],
         //
-        "ANDROID": [0, 5],
-        "FLUTTER": [1, 5],
-        "JETPACK": [2, 5],
-        "KOTLIN": [3, 5],
-        "OBJECTIVE C": [4, 5],
-        "REACT NATIVE": [5, 5],
-        "RXJAVA": [6, 5],
-        "SWIFT": [7, 5],
-        "XAMARIN": [8, 5],
+        "Android": [0, 5],
+        "Flutter": [1, 5],
+        "Jetpack": [2, 5],
+        "Kotlin": [3, 5],
+        "Objective C": [4, 5],
+        "React Native": [5, 5],
+        "RXJava": [6, 5],
+        "Swift": [7, 5],
+        "Xamarin": [8, 5],
         //
-        "GITHUB": [0, 6],
+        "GitHub": [0, 6],
         "FSO": [1, 6],
-        "BITBUCKET": [2, 6],
+        "BitBucket": [2, 6],
         //
-        "FIGMA": [0, 7],
-        "ZEPLIN": [1, 7],
-        "SKETCH": [2, 7],
-        "MAZE": [3, 7],
-        "PROTOPIE": [4, 7]
+        "Figma": [0, 7],
+        "Zeplin": [1, 7],
+        "Sketch": [2, 7],
+        "Maze": [3, 7],
+        "Protopie": [4, 7]
     };
-    return stacks[name];
+    return stacks[name] || [1000, 1000];
 }
 export default StackItem;

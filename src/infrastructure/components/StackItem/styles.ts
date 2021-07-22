@@ -2,7 +2,6 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Glyphs from "infrastructure/assets/img/Glyphs.png";
 
 const useStyles = (offset: [number, number], x?: number, y?: number) => makeStyles(({palette}: Theme) => {
-console.log("PPPP", palette.secondary)
     if (x === undefined)
         x = 0;
     if (y === undefined)
@@ -19,7 +18,17 @@ console.log("PPPP", palette.secondary)
             backgroundColor: palette.secondary.dark,
             backgroundImage: `url(${Glyphs})`,
             backgroundPositionX: -116 * offset[0],
-            backgroundPositionY: -182 * offset[1] ,
+            backgroundPositionY: -182 * offset[1]
+        },
+        cardEmpty: {
+            width: 100,
+            height: 100,
+            padding: 0,
+            margin: 0,
+            backgroundColor: palette.secondary.dark,
+        },
+        tooltip: {
+            backgroundColor: palette.primary.main
         },
         absoluteCard: {
             position: "absolute",

@@ -1,33 +1,141 @@
-import Card from "@material-ui/core/Card";
+import React from "react";
 
-import banner from '../../assets/img/banner_default.png';
-import avatar from '../../assets/img/Nuwe_Gradient 1.png';
 import { LocationIcon, GithubIcon, LinkedInIcon, GitlabIcon, BehanceIcon } from "../Icons/Icons";
 import useStyles from "./styles";
 import Pentagon from '../../assets/img/pentagon3.svg';
+import StackItem from "../StackItem/StackItemComponent";
+import SoftSkillItem from "../SoftSkillItem/SoftSkillItemComponent";
 
+import Card from "@material-ui/core/Card";
 import BusinessIcon from '@material-ui/icons/Business';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import LanguageIcon from '@material-ui/icons/Language';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import InsertChartOutlinedIcon from '@material-ui/icons/InsertChartOutlined';
 import { useTheme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
-import StackItem from "../StackItem/StackItemComponent";
 import Hidden from "@material-ui/core/Hidden";
-import useWindowDimensions from "../Hooks/useWindowDimensions";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+// Redux
+import { useWindowDimensions } from "app/hooks";
+import { useAppSelector, useAppDispatch } from 'app/hooks'
+import { fetchPersonalProfile, selectPersonalProfile } from "./personalProfileSlice";
+import { fetchNuweProfile, selectNuweProfile } from "./nuweProfileSlice";
+import PersonalProfile from "domain/model/PersonalProfile";
+import NuweProfile from "domain/model/NuweProfile";
+
+import SpecialityEnum from "domain/model/SpecialityEnum";
+import LevelEnum from "domain/model/LevelEnum";
+import CompanyEnum from "domain/model/CompanyEnum";
+
 
 const Profile = () => {
     const theme = useTheme();
     const classes = useStyles();
     const {width } = useWindowDimensions();
     const notMobile = useMediaQuery(theme.breakpoints.up('sm'));
+    // TODO: Add to an utility modul
+    const getPeriod = (from: Date | string, to: Date | string) => {
+        let f: Date, t: Date;
+        let res: string;
+        if (typeof from === "string")
+            f = new Date(from);
+        else
+            f = from;
+        if (typeof to === "string")
+            t = new Date(to);
+        else
+            t = to;
+        const time = f.getTime() - t.getTime();
+        if (Math.abs(time) <= 60 * 1000 )
+            return "ahora";
+        if (time > 0)
+            res = "hace ";
+        else
+            res = "dentro de ";
+        const min = Math.round(Math.abs(time) / (60 * 1000));
+        if (min < 60) {
+            if (min === 1)
+                return res + "un minuto";
+            else
+                return res + min + " minutos";
+        }
+        const hor = Math.round(min / 60);
+        if (hor < 24) {
+            if (hor === 1)
+                return res + "una hora";
+            else
+                return res + hor + " horas";
+        }
+        const dias = Math.round(hor / 24);
+        if (dias < 31) {
+            if (dias === 1) {
+                if (time > 0)
+                    return "ayer";
+                else
+                    return "mañana";
+            } else {
+                return res + dias + " días";
+            }
+        }
+        const meses = Math.round(dias / 30);
+        if (meses < 12) {
+            if (meses === 1)
+                return res + "un mes";
+            else
+                return res + hor + " meses";
+        }
+        return "más de un año";
+    }
 
+    // Redux
+    const dispatch = useAppDispatch()
+    const personalProfile = useAppSelector(selectPersonalProfile) as PersonalProfile;
+    const nuweProfile = useAppSelector(selectNuweProfile) as NuweProfile;
+    const personalProfileStatus = useAppSelector(state => state.personalProfile.status)
+    const nuweProfileStatus = useAppSelector(state => state.nuweProfile.status)
+    const personalProfileError = useAppSelector(state => state.personalProfile.error)
+    const nuweProfileError = useAppSelector(state => state.nuweProfile.error)
+
+    const [isReady, setReady] = React.useState(false);
+
+    React.useEffect(() => {
+        const constructor = async () => {
+            try {
+                dispatch(fetchPersonalProfile());
+                dispatch(fetchNuweProfile());
+            } catch (e) {
+                // ignore error
+            } finally {
+                setReady(true);
+            }
+        };
+        if (!isReady)
+            constructor();
+            
+    }, [dispatch, isReady]);
+
+    if (!isReady)
+        return null;
+
+    const loading = personalProfileStatus === "loading" || nuweProfileStatus === "loading"
+    const failed = personalProfileStatus === "failed" || nuweProfileStatus === "failed"
+    if (loading)
+        return (<div className={classes.loadingError}>
+                <CircularProgress />
+                <Typography variant="h4">Loading...</Typography>
+            </div>)
+    else if (failed)
+        return(<div className={classes.loadingError}>{personalProfileError}{nuweProfileError}</div>)   
+
+    // Skills render position calculations
     const calcPentagon = (n: number, r: number) => {
         const penta: [x: number, y: number][] = [];
         for (let i = 0; i < n; i++) {
@@ -41,34 +149,62 @@ const Profile = () => {
     const radio = offsetX > 250 ? 250 : offsetX
     const offsetY = 70;
     const penta = calcPentagon(5, radio);
+    const hardSkillsHeight = nuweProfile.hardSkills.length === 0
+        ? 0
+        : nuweProfile.hardSkills.length > 5
+        ? 3 * radio + 200 // more than 5
+        : nuweProfile.hardSkills.length > 2 
+        ? 3 * radio + 120 // 3, 4 or 5
+        : 2 * radio + 120 // 1 or 2
+    const softSkillsHeight = nuweProfile.softSkills.length === 0
+        ? 0
+        : nuweProfile.softSkills.length > 5
+        ? 3 * radio + 200
+        : nuweProfile.softSkills.length > 2 
+        ? 3 * radio + 120
+        : 2 * radio + 120
 
     return (
         <>
             <Card className={classes.generalCard}>
+                {/* 
+                //      Header
+                */}
                 <CardMedia
                     className={classes.generalCardMedia}
-                    image={banner}
+                    image={personalProfile.headerImage}
                     title="Imagen de fondo"
                 />
+                {/* 
+                //      Personal information
+                */}
                 <CardContent className={classes.generalCardContent}>
-                    <Avatar className={classes.generalCardAvatar} alt="Avatar del usuario" src={avatar} />
-                    <Typography variant="h4" className={classes.generalCardName}>Manuel</Typography>
+                    <Avatar className={classes.generalCardAvatar} 
+                        alt="Avatar del usuario"
+                        style={{width: theme.spacing(21), height: theme.spacing(21)}} // CSS problem. Size lost after first render
+                        src={personalProfile.avatar} />
+                    <Typography variant="h4" className={classes.generalCardName}>{personalProfile.username}</Typography>
                     <div className={classes.inline}>
-                        <Typography variant="h6">johnnd@micorreo.com | +34 666 666 666</Typography>
+                        <Typography variant="h6">{personalProfile.email} | {personalProfile.tel}</Typography>
                     </div>
-                    <Typography variant="h6">Fullstack. Más de 15 años programando software de gestión para grandes empresas. Estos últimos años he estado reciclando mis conocimientos: Angular, React, React native, Cordova, Java, Android, Nodejs, BBDD, etc</Typography>
+                    <div className={classes.inline}>
+                        <Typography variant="h4">{SpecialityEnum[personalProfile.speciality]} - {LevelEnum[personalProfile.level]}</Typography>
+                    </div>
+                     <Typography variant="h6">{personalProfile.biography}</Typography>
                     <div className={classes.inline} >
-                        <GithubIcon className="icon" viewBox="0 0 150 150" />
-                        <LinkedInIcon className="icon" viewBox="0 0 150 150" />
-                        <GitlabIcon className="icon" viewBox="0 0 150 150" />
-                        <BehanceIcon className={["icon", "large"]} viewBox="0 0 64 64" />
+                        {personalProfile.github && <GithubIcon className="icon" viewBox="0 0 150 150" />}
+                        {personalProfile.linkedin && <LinkedInIcon className="icon" viewBox="0 0 150 150" />}
+                        {personalProfile.gitlab && <GitlabIcon className="icon" viewBox="0 0 150 150" />}
+                        {personalProfile.behance && <BehanceIcon className={["icon", "large"]} viewBox="0 0 64 64" />}
                         <div className="iconned">
                             <LocationIcon className="icon" viewBox="0 0 101 100" />
-                            <Typography variant="h6">Barcelona, España</Typography>
+                            <Typography variant="h6">{personalProfile.city}, {personalProfile.country}</Typography>
                         </div>
-                        <Typography variant="h6">Última conexión hace 2 horas</Typography>
+                        <Typography variant="h6">Última conexión {getPeriod(new Date(), personalProfile.lastConnection)}</Typography>
                     </div>
-                    <Typography variant="h4">Buscando trabajo de fullstack sénior</Typography>
+                    {personalProfile.getOffers &&
+                        <Typography variant="h4">Buscando trabajo de {personalProfile.job} en {personalProfile.jobPlace}</Typography>
+                    }
                     <Paper className="paper" variant="outlined" >
                         <Hidden smUp implementation="css">
                             <Typography className="caption" variant="h6">Stack</Typography>
@@ -77,68 +213,86 @@ const Profile = () => {
                             <Typography className="caption" variant="h6">Stack indicado por el usuario</Typography>
                         </Hidden>
                         <Paper className="container">
-                            {["JAVA", "ANGULAR", "CSS 3", "HTML 5", "JAVA SCRIPT",
-                                "REACT", "TYPE SCRIPT", "MARIADB", "MONGODB",
-                                "MYSQL", "ANDROID", "REACT NATIVE", "GITHUB", "FIGMA"].map(value => (
-                                    <StackItem name={value} />
-                                ))}
+                            {personalProfile.stack.map((value, i) => (
+                                <StackItem name={value} key={i}/>
+                            ))}
                         </Paper>
                     </Paper>
                 </CardContent>
             </Card>
+            {/* 
+            //      Job
+            */}
             <Card className={classes.generalCard}>
                 <CardContent className={classes.generalCardContent}>
-                    <Typography variant="h4" className={classes.generalCardName}>Sobre el puesto que busca Manuel:</Typography>
+                    <Typography variant="h4" className={classes.generalCardName}>Sobre el puesto que busca {personalProfile.username}:</Typography>
                     <div className={classes.inline} >
                         <div className="iconned">
                             <LocationIcon className="icon" viewBox="0 0 101 100" />
-                            <Typography variant="h6">Barcelona, España</Typography>
+                            <Typography variant="h6">{personalProfile.jobPlace}a</Typography>
                         </div>
                         <div className="iconned">
                             <BusinessIcon className="icon" />
-                            <Typography variant="h6">Startup</Typography>
+                            <Typography variant="h6">{CompanyEnum[personalProfile.companyType]}</Typography>
                         </div>
                         <div className="iconned">
                             <MonetizationOnIcon className="icon" />
-                            <Typography variant="h6">40.000 a 45.000 €/a</Typography>
+                            <Typography variant="h6">{new Intl.NumberFormat().format(personalProfile.minimumSalary)} a {new Intl.NumberFormat().format(personalProfile.optimalSalary)} €/a</Typography>
                         </div>
                     </div>
                     <div className={classes.separator}></div>
                     <div className={classes.inline} >
-                        <div className="iconned">
-                            <FlightTakeoffIcon className="icon" />
-                            <Typography variant="h6">Disponibilidad para viajar</Typography>
-                        </div>
-                        <div className="iconned">
-                            <LanguageIcon className="icon" />
-                            <Typography variant="h6">Disponibilidad para trabajar en remoto</Typography>
-                        </div>
-                        <div className="iconned">
-                            <DateRangeIcon className="icon" />
-                            <Typography variant="h6">Incorporación inmediata</Typography>
-                        </div>
+                        {personalProfile.tripAvailability &&
+                            <div className="iconned">
+                                <FlightTakeoffIcon className="icon" />
+                                <Typography variant="h6">Disponibilidad para viajar</Typography>
+                            </div>
+                        }   
+                        {personalProfile.remotelyWork &&
+                            <div className="iconned">
+                                <LanguageIcon className="icon" />
+                                <Typography variant="h6">Disponibilidad para trabajar en remoto</Typography>
+                            </div>
+                        }
+                        {personalProfile.immediateIncorporation &&
+                            <div className="iconned">
+                                <DateRangeIcon className="icon" />
+                                <Typography variant="h6">Incorporación inmediata</Typography>
+                            </div>
+                        }
                     </div>
                 </CardContent>
             </Card>
+            {/* 
+            //      Tab menu
+            */}
             <div className={classes.inline} >
                 <Typography variant="h6" style={{ color: theme.palette.primary.dark, textDecorationLine: "underline" }}>Perfil Nuwe</Typography>
                 <Typography variant="h6" style={{ marginLeft: "2rem" }}>Timeline CV</Typography>
                 <Typography variant="h6" style={{ marginLeft: "2rem" }}>Social</Typography>
             </div>
             <div className={classes.separator}></div>
-            {/* <Hidden smUp implementation="css">
-                <Typography className="caption" variant="h6">Hard skills validadas en NUWE</Typography>
-            </Hidden> */}
+            {/* 
+            //      Score
+            */}
             <Hidden xsDown implementation="css">
                 <div style={{textAlign: "center"}}>
-                    <Typography variant="h6">Perfil validado en NUWE de Manuel:</Typography>
-                    <Typography variant="h6">17/2500u/6000pts</Typography>
+                    <Typography variant="h6">Perfil validado en NUWE de {personalProfile.username}:</Typography>
+                    <div className={classes.inline} >
+                        <div className="iconned">
+                            <InsertChartOutlinedIcon className="icon" />
+                            <Typography variant="h6">{new Intl.NumberFormat().format(nuweProfile.rankingPosition)}/{new Intl.NumberFormat().format(nuweProfile.totalUsers)}u | {new Intl.NumberFormat().format(nuweProfile.points)}pts</Typography>
+                        </div>
+                    </div>
                 </div>
             </Hidden>
-            <div style={{textAlign: "center"}}>
-                <Typography variant="h6" className="caption">Hard skills validadas en NUWE</Typography>            
+            {/* 
+            //      Hard Skills
+            */}
+            <div style={{textAlign: "left"}}>
+                {/* <Typography variant="h6" className="caption">Hard skills validadas en NUWE</Typography>             */}
             </div>
-            <Paper className={classes.skills} style={{height: 3 * radio + 100}} variant="outlined" >
+            <Paper className={classes.skills} style={{height: hardSkillsHeight}} variant="outlined" >
                 <div style={{textAlign: "center"}}>
                     <Typography variant="h6">Top 5 hard skills</Typography>
                 </div>
@@ -154,20 +308,84 @@ const Profile = () => {
                             )`
                         }}>
                     </img>
-                    {["JAVA", "ANGULAR", "CSS 3", "HTML 5", "MYSQL"].map((value, i) => {
-
+                    {nuweProfile.hardSkills.map((value, i) => {
+                        let y: number;
                         if (penta[i][1] >= 0)
-                            penta[i][1] = radio - penta[i][1];
+                            y = radio - penta[i][1];
                         else {
-                            penta[i][1] *= -1;
-                            penta[i][1] += radio;
+                            y = penta[i][1] * -1 + radio;
                         }
                         if (i === 0)
-                            penta[i][1] -= 50;
+                            y -= 50;
+                        else if (i === 1 || i === 4)
+                            y -= 20
                         return (
-                            <StackItem name={value}
+                            <StackItem key={i}
+                                name={value.name}
+                                points={value.points}
+                                topPct={value.topPct}
                                 x={offsetX + penta[i][0]}
-                                y={offsetY + penta[i][1]} />
+                                y={offsetY + y} />
+                        )
+                        // if (penta[i][1] >= 0)
+                        //     penta[i][1] = radio - penta[i][1];
+                        // else {
+                        //     penta[i][1] *= -1;
+                        //     penta[i][1] += radio;
+                        // }
+                        // if (i === 0)
+                        //     penta[i][1] -= 50;
+                        // return (
+                        //     <StackItem name={value.name}
+                        //         points={value.points}
+                        //         topPct={value.topPct}
+                        //         x={offsetX + penta[i][0]}
+                        //         y={offsetY + penta[i][1]} />
+                        // )
+                    })}
+                {/* </Paper> */}
+            </Paper>
+            {/* 
+            //      Soft Skills
+            */}
+            <div style={{textAlign: "left"}}>
+                {/* <Typography variant="h6" className="caption">Soft skills validadas en NUWE</Typography>             */}
+            </div>
+            <Paper className={classes.skills} style={{height: softSkillsHeight}} variant="outlined" >
+                <div style={{textAlign: "center"}}>
+                    <Typography variant="h6">Puntuaciones retos grupales</Typography>
+                </div>
+                {/* <Paper className={ `className="container" ${classes.skills}`} style={{height: 3 * radio}}> */}
+                    <img className={classes.pentagon}
+                        src={Pentagon}
+                        alt="Pentágono"
+                        style={{
+                            width: radio,
+                            transform: `translate(
+                                ${offsetX - (radio / 2) + 50}px, 
+                                ${offsetY + radio - 90}px
+                            )`
+                        }}>
+                    </img>
+                    {nuweProfile.softSkills.map((value, i) => {
+                        let y: number;
+                        if (penta[i][1] >= 0)
+                            y = radio - penta[i][1];
+                        else {
+                            y = penta[i][1] * -1 + radio;
+                        }
+                        if (i === 0)
+                            y -= 50;
+                        else if (i === 1 || i === 4)
+                            y -= 20
+                        return (
+                            <SoftSkillItem key={i}
+                                name={value.name}
+                                idx={i}
+                                points={value.points}
+                                topPoints={value.topPoints}
+                                x={offsetX + penta[i][0]}
+                                y={offsetY + y} />
                         )
                     })}
                 {/* </Paper> */}

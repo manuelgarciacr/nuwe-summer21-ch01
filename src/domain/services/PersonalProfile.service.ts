@@ -1,7 +1,7 @@
+import { PersonalProfile } from "domain/model/PersonalProfile";
 import PersonalProfileRepository from "infrastructure/repositories/personalProfile";
 
-const PersonalProfileService = {
-    get: async (url: string): Promise<any> => PersonalProfileRepository.get()
+export const PersonalProfileService = {
+    get: async (): Promise<PersonalProfile> => PersonalProfileRepository.get(),
+    put: async (data: PersonalProfile): Promise<PersonalProfile> => PersonalProfileRepository.put(data)
 };
-
-export default PersonalProfileService;

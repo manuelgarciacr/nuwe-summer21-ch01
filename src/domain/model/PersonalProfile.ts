@@ -1,8 +1,4 @@
-import CompanyEnum from "./CompanyEnum";
-import LevelEnum from "./LevelEnum";
-import SpecialityEnum from "./SpecialityEnum";
-
-type PersonalProfile = {
+export type PersonalProfile = {
     fullname: string;
     username: string;
     email: string;
@@ -12,8 +8,8 @@ type PersonalProfile = {
     headerImage: string;
     //
     avatar: string;
-    speciality: SpecialityEnum;
-    level: LevelEnum;
+    speciality: number;
+    specialityLevel: number;
     biography: string;
     linkedin: string;
     github: string;
@@ -32,7 +28,7 @@ type PersonalProfile = {
     getOffers: boolean;
     job: string;
     jobPlace: string,
-    companyType: CompanyEnum;
+    companyType: number;
     minimumSalary: number;
     optimalSalary: number;
     remotelyWork: boolean;
@@ -40,4 +36,3 @@ type PersonalProfile = {
     immediateIncorporation: boolean;
 }
 
-export default PersonalProfile;

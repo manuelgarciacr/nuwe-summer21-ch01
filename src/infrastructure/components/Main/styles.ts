@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         appBar: {
             [theme.breakpoints.up("sm")]: {
-                width: `calc(100% - ${drawerWidth}px)`,
+                width: `calc(100vw - ${drawerWidth}px)`,
                 marginLeft: drawerWidth,
                 backgroundColor: "transparent"
             },
@@ -43,14 +43,14 @@ const useStyles = makeStyles((theme: Theme) =>
             [theme.breakpoints.up("sm")]: {
                 display: "none",
             },
-            color: "green"
         },
         menuIcon: {
             fontSize: 36,
         },
         configButton: {
-            color: "green"
-            //marginRight: theme.spacing(2),
+            [theme.breakpoints.up("sm")]: {
+                color: theme.palette.primary.main
+            },
         },
         // necessary for content to be below app bar
         toolbar: theme.mixins.toolbar,

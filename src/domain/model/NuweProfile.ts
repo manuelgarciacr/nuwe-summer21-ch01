@@ -1,7 +1,7 @@
 import SoftSkill from "./SoftSkill";
 import HardSkill from "./HardSkill";
 
-type NuweProfile = {
+export type NuweProfile = {
     points: number,
     hardSkills: HardSkill[],
     softSkills: SoftSkill[],
@@ -9,4 +9,3 @@ type NuweProfile = {
     totalUsers: number
 }
 
-export default NuweProfile;

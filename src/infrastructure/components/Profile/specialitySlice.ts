@@ -1,46 +1,46 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../../../app/store";
-import { NuweProfile } from "domain/model/NuweProfile";
-import { NuweProfileService } from "domain/services/NuweProfile.service";
+import { IdName } from "domain/model/IdName";
+import { SpecialityService } from "domain/services/Speciality.service";
 
-export interface NuweProfileState {
-    value: NuweProfile | {};
+export interface SpecialityState {
+    value: IdName[];
     status: "idle" | "loading" | 'succeeded' | "failed";
     error: string;
     currentRequestId: string;
 }
 
-const initialState: NuweProfileState = {
-    value: {},
+const initialState: SpecialityState = {
+    value: [],
     status: "idle",
     error: "",
     currentRequestId: ""
 };
 
-export const fetchNuweProfile = createAsyncThunk('nuweProfile/fetchNuweProfile', async () => {
-    const response = await NuweProfileService.get()
+export const fetchSpecialities = createAsyncThunk('speciality/fetchSpecialities', async () => {
+    const response = await SpecialityService.get()
     return response
 })
 
-export const nuweProfileSlice = createSlice({
-    name: "nuweProfile",
+export const specialitySlice = createSlice({
+    name: "speciality",
     initialState,
     reducers: {
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchNuweProfile.pending, (state, action) => {
+            .addCase(fetchSpecialities.pending, (state, action) => {
                 state.status = "loading";
                 state.currentRequestId = action.meta.requestId;
             })
-            .addCase(fetchNuweProfile.fulfilled, (state, action) => {
+            .addCase(fetchSpecialities.fulfilled, (state, action) => {
                 if (action.meta.requestId === state.currentRequestId) {
                     state.status = "succeeded";
                     state.value = action.payload;
                     state.currentRequestId = "";
                 }
             })
-            .addCase(fetchNuweProfile.rejected, (state, action) => {
+            .addCase(fetchSpecialities.rejected, (state, action) => {
                 if (action.meta.requestId === state.currentRequestId) {
                     state.status = "failed";
                     state.error = action.error.message || "";
@@ -50,5 +50,5 @@ export const nuweProfileSlice = createSlice({
     },
 });
 
-export const selectNuweProfile = (state: RootState) => state.nuweProfile.value;
-export default nuweProfileSlice.reducer;
+export const selectSpecialities = (state: RootState) => state.speciality.value;
+export default specialitySlice.reducer;

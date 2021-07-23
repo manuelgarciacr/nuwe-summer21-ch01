@@ -14,22 +14,29 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import { BrowserRouter as Router, Link, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, BrowserRouter as Router, Link, Redirect, Route, Switch } from 'react-router-dom';
 
 import useStyles from './styles';
-import Another from '../Another/AnotherComponent';
-import Profile from '../Profile/ProfileComponent';
+// import Another from '../Another/AnotherComponent';
+// import Profile from '../Profile/ProfileComponent';
 
-import logo from '../../assets/img/Nuwe_Mono 1.png';
-import letters from '../../assets/img/Nuwe_Letters.png';
+import logo from '../../assets/img/Nuwe_Mono_white.png';
+import letters from '../../assets/img/Nuwe_Letters_white.png';
+import logoGreen from '../../assets/img/Nuwe_Mono.png';
+import lettersGreen from '../../assets/img/Nuwe_Letters.png';
 import { HomeIcon, WorkIcon, ProfileIcon, ContactIcon } from '../Icons/Icons';
+
+const Another = React.lazy(() => import('../Another/AnotherComponent'));
+const Profile = React.lazy(() => import('../Profile/ProfileComponent'));
 
 const Main = (props: any) => {
     // const { window } = props;
     const theme = useTheme();
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const notMobile = useMediaQuery(theme.breakpoints.up('sm'));
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -40,29 +47,35 @@ const Main = (props: any) => {
     const drawer = (
         <div>
             <div className={classes.toolbar} >
-                <img className={classes.logo} src={logo} alt="Logo" />
-                <img className={classes.logo} src={letters} alt="Nuwe" />
+                {notMobile && <>
+                    <img className={classes.logo} src={logoGreen} alt="Logo" />
+                    <img className={classes.logo} src={lettersGreen} alt="Nuwe" />
+                </>}
+                {!notMobile && <>
+                    <img className={classes.logo} src={logo} alt="Logo" />
+                    <img className={classes.logo} src={letters} alt="Nuwe" />
+                </>}
             </div>
             <Divider />
-            <List>
-                <ListItem button key={'panel'} onClick={closeDrawer} component={Link} to="/panel">
-                    <ListItemIcon><HomeIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
-                    <ListItemText primary={<Typography variant="subtitle1">Panel</Typography>} />
-                </ListItem>
-                <ListItem button key={'enterprises'} onClick={closeDrawer} component={Link} to="/enterprises">
-                    <ListItemIcon><WorkIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
-                    {/* <ListItemText primary={<Typography variant="subtitle1" style={{ color: '#ff6f00' }}>Empresas</Typography>}/> */}
-                    <ListItemText primary={<Typography variant="subtitle1">Empresas</Typography>} />
-                </ListItem>
-                <ListItem button key={'profile'} onClick={closeDrawer} component={Link} to="/profile">
-                    <ListItemIcon><ProfileIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
-                    <ListItemText primary={<Typography variant="subtitle1">Perfil</Typography>} />
-                </ListItem>
-                <ListItem button key={'contact'} onClick={closeDrawer} component={Link} to="/contact">
-                    <ListItemIcon><ContactIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
-                    <ListItemText primary={<Typography variant="subtitle1">Contacto</Typography>} />
-                </ListItem>
-            </List>
+                <List>
+                    <ListItem button key={'panel'} onClick={closeDrawer} component={Link} to="/panel">
+                        <ListItemIcon><HomeIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
+                        <ListItemText primary={<Typography variant="subtitle1">Panel</Typography>} />
+                    </ListItem>
+                    <ListItem button key={'enterprises'} onClick={closeDrawer} component={Link} to="/enterprises">
+                        <ListItemIcon><WorkIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
+                        {/* <ListItemText primary={<Typography variant="subtitle1" style={{ color: '#ff6f00' }}>Empresas</Typography>}/> */}
+                        <ListItemText primary={<Typography variant="subtitle1">Empresas</Typography>} />
+                    </ListItem>
+                    <ListItem button key={'profile'} onClick={closeDrawer} component={Link} to="/profile">
+                        <ListItemIcon><ProfileIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
+                        <ListItemText primary={<Typography variant="subtitle1">Perfil</Typography>} />
+                    </ListItem>
+                    <ListItem button key={'contact'} onClick={closeDrawer} component={Link} to="/contact">
+                        <ListItemIcon><ContactIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
+                        <ListItemText primary={<Typography variant="subtitle1">Contacto</Typography>} />
+                    </ListItem>
+                </List>
             <Divider />
         </div>
     );
@@ -94,7 +107,7 @@ const Main = (props: any) => {
                             color="inherit"
                             aria-label="Configuration"
                             edge="end"
-                            onClick={handleDrawerToggle}
+                            // onClick={handleDrawerToggle}
                             className={classes.configButton}
                         >
                             <SettingsRoundedIcon className={classes.menuIcon} />
@@ -134,17 +147,22 @@ const Main = (props: any) => {
                 </nav>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <Switch>
-                        <Route exact path="/">
-                            <Redirect to="/panel" />
-                        </Route>
-                        <Route exact path="/profile">
-                            <Profile />
-                        </Route>
-                        <Route path="/:id">
-                            <Another />
-                        </Route>
-                    </Switch>
+                    <React.Suspense fallback={<div>Loading...</div>}>
+                        <Switch>
+                            <Route exact path="/">
+                                <Redirect to="/panel" />
+                            </Route>
+                            <Route exact path="/nuwe2101">
+                                <Redirect to="/panel" />
+                            </Route>
+                            <Route exact path="/profile">
+                                <Profile />
+                            </Route>
+                            <Route path="/:id">
+                                <Another />
+                            </Route>
+                        </Switch>
+                    </React.Suspense>
                 </main>
             </div>
         </Router>

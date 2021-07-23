@@ -21,9 +21,11 @@ const useStyles = (idx: number, x?: number, y?: number) => makeStyles(({palette}
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            position: "absolute",
-            transform: `translate(${x}px, ${y}px)` ,
             textAlign: "center"
+        },
+        absoluteContent: {
+            position: "absolute",
+            transform: `translate(${x}px, ${y}px)`
         },
         text: {
             width: w,

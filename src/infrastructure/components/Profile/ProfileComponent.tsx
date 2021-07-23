@@ -22,19 +22,19 @@ import Paper from "@material-ui/core/Paper";
 import Hidden from "@material-ui/core/Hidden";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import List from "@material-ui/core/List";
 
 // Redux
 import { useWindowDimensions } from "app/hooks";
 import { useAppSelector, useAppDispatch } from 'app/hooks'
 import { fetchPersonalProfile, selectPersonalProfile } from "./personalProfileSlice";
 import { fetchNuweProfile, selectNuweProfile } from "./nuweProfileSlice";
-import PersonalProfile from "domain/model/PersonalProfile";
-import NuweProfile from "domain/model/NuweProfile";
-
-import SpecialityEnum from "domain/model/SpecialityEnum";
-import LevelEnum from "domain/model/LevelEnum";
-import CompanyEnum from "domain/model/CompanyEnum";
-
+import { fetchSpecialities, selectSpecialities } from "./specialitySlice";
+import { fetchSpecialityLevels, selectSpecialityLevels } from "./specialityLevelSlice";
+import { fetchCompanyTypes, selectCompanyTypes } from "./companyTypeSlice";
+import { PersonalProfile } from "domain/model/PersonalProfile";
+import { NuweProfile } from "domain/model/NuweProfile";
+import { IdName } from "domain/model/IdName";
 
 const Profile = () => {
     const theme = useTheme();
@@ -45,6 +45,9 @@ const Profile = () => {
     const getPeriod = (from: Date | string, to: Date | string) => {
         let f: Date, t: Date;
         let res: string;
+        
+        console.log("FF", typeof from, from)
+        console.log("TT", typeof to, to)
         if (typeof from === "string")
             f = new Date(from);
         else
@@ -99,10 +102,21 @@ const Profile = () => {
     const dispatch = useAppDispatch()
     const personalProfile = useAppSelector(selectPersonalProfile) as PersonalProfile;
     const nuweProfile = useAppSelector(selectNuweProfile) as NuweProfile;
+    const specialities = useAppSelector(selectSpecialities) as IdName[];
+    const specialityLevels = useAppSelector(selectSpecialityLevels) as IdName[];
+    const companyTypes = useAppSelector(selectCompanyTypes) as IdName[];
+    
     const personalProfileStatus = useAppSelector(state => state.personalProfile.status)
     const nuweProfileStatus = useAppSelector(state => state.nuweProfile.status)
+    const specialityStatus = useAppSelector(state => state.speciality.status)
+    const specialityLevelStatus = useAppSelector(state => state.specialityLevel.status)
+    const companyTypeStatus = useAppSelector(state => state.companyType.status)
+    
     const personalProfileError = useAppSelector(state => state.personalProfile.error)
     const nuweProfileError = useAppSelector(state => state.nuweProfile.error)
+
+    const getName = (id: number, arr: IdName[]) => 
+        arr.find(v => v.id === id)?.name || "";
 
     const [isReady, setReady] = React.useState(false);
 
@@ -111,6 +125,9 @@ const Profile = () => {
             try {
                 dispatch(fetchPersonalProfile());
                 dispatch(fetchNuweProfile());
+                dispatch(fetchSpecialities());
+                dispatch(fetchSpecialityLevels());
+                dispatch(fetchCompanyTypes());
             } catch (e) {
                 // ignore error
             } finally {
@@ -125,8 +142,14 @@ const Profile = () => {
     if (!isReady)
         return null;
 
-    const loading = personalProfileStatus === "loading" || nuweProfileStatus === "loading"
-    const failed = personalProfileStatus === "failed" || nuweProfileStatus === "failed"
+    const loading = personalProfileStatus === "loading" 
+        || nuweProfileStatus === "loading"
+        || specialityStatus === "loading"
+        || specialityLevelStatus === "loading"
+        || companyTypeStatus === "loading";
+    const failed = personalProfileStatus === "failed" 
+        || nuweProfileStatus === "failed";
+        // Even if specialities, speciality levels or company types failed the app continues
     if (loading)
         return (<div className={classes.loadingError}>
                 <CircularProgress />
@@ -134,7 +157,6 @@ const Profile = () => {
             </div>)
     else if (failed)
         return(<div className={classes.loadingError}>{personalProfileError}{nuweProfileError}</div>)   
-
     // Skills render position calculations
     const calcPentagon = (n: number, r: number) => {
         const penta: [x: number, y: number][] = [];
@@ -151,15 +173,11 @@ const Profile = () => {
     const penta = calcPentagon(5, radio);
     const hardSkillsHeight = nuweProfile.hardSkills.length === 0
         ? 0
-        : nuweProfile.hardSkills.length > 5
-        ? 3 * radio + 200 // more than 5
         : nuweProfile.hardSkills.length > 2 
         ? 3 * radio + 120 // 3, 4 or 5
         : 2 * radio + 120 // 1 or 2
     const softSkillsHeight = nuweProfile.softSkills.length === 0
         ? 0
-        : nuweProfile.softSkills.length > 5
-        ? 3 * radio + 200
         : nuweProfile.softSkills.length > 2 
         ? 3 * radio + 120
         : 2 * radio + 120
@@ -188,7 +206,7 @@ const Profile = () => {
                         <Typography variant="h6">{personalProfile.email} | {personalProfile.tel}</Typography>
                     </div>
                     <div className={classes.inline}>
-                        <Typography variant="h4">{SpecialityEnum[personalProfile.speciality]} - {LevelEnum[personalProfile.level]}</Typography>
+                        <Typography variant="h4">{getName(personalProfile.speciality, specialities)} - {getName(personalProfile.specialityLevel, specialityLevels)}</Typography>
                     </div>
                      <Typography variant="h6">{personalProfile.biography}</Typography>
                     <div className={classes.inline} >
@@ -229,11 +247,11 @@ const Profile = () => {
                     <div className={classes.inline} >
                         <div className="iconned">
                             <LocationIcon className="icon" viewBox="0 0 101 100" />
-                            <Typography variant="h6">{personalProfile.jobPlace}a</Typography>
+                            <Typography variant="h6">{personalProfile.jobPlace}</Typography>
                         </div>
                         <div className="iconned">
                             <BusinessIcon className="icon" />
-                            <Typography variant="h6">{CompanyEnum[personalProfile.companyType]}</Typography>
+                            <Typography variant="h6">{getName(personalProfile.companyType, companyTypes)}</Typography>
                         </div>
                         <div className="iconned">
                             <MonetizationOnIcon className="icon" />
@@ -292,58 +310,58 @@ const Profile = () => {
             <div style={{textAlign: "left"}}>
                 {/* <Typography variant="h6" className="caption">Hard skills validadas en NUWE</Typography>             */}
             </div>
+            {/* TODO: Put the skills in its own component */}
             <Paper className={classes.skills} style={{height: hardSkillsHeight}} variant="outlined" >
                 <div style={{textAlign: "center"}}>
                     <Typography variant="h6">Top 5 hard skills</Typography>
                 </div>
-                {/* <Paper className={ `className="container" ${classes.skills}`} style={{height: 3 * radio}}> */}
-                    <img className={classes.pentagon}
-                        src={Pentagon}
-                        alt="Pentágono"
-                        style={{
-                            width: radio,
-                            transform: `translate(
-                                ${offsetX - (radio / 2) + 50}px, 
-                                ${offsetY + radio - 90}px
-                            )`
-                        }}>
-                    </img>
+                <img className={classes.pentagon}
+                    src={Pentagon}
+                    alt="Pentágono"
+                    style={{
+                        width: radio,
+                        transform: `translate(
+                            ${offsetX - (radio / 2) + 50}px, 
+                            ${offsetY + radio - 90}px
+                        )`
+                    }}>
+                </img>
+                {nuweProfile.hardSkills.map((value, i) => {
+                    if (i > 4)
+                        return null;
+                    let y: number;
+                    if (penta[i][1] >= 0)
+                        y = radio - penta[i][1];
+                    else {
+                        y = penta[i][1] * -1 + radio;
+                    }
+                    if (i === 0)
+                        y -= 50;
+                    else if (i === 1 || i === 4)
+                        y -= 20
+                    return (
+                        <StackItem key={i}
+                            name={value.name}
+                            points={value.points}
+                            topPct={value.topPct}
+                            x={offsetX + penta[i][0]}
+                            y={offsetY + y} />
+                    )
+                })}
+            </Paper>
+            <Paper style={{height: 180}} className={classes.carousel}>
+                <List className={"content"}>
                     {nuweProfile.hardSkills.map((value, i) => {
-                        let y: number;
-                        if (penta[i][1] >= 0)
-                            y = radio - penta[i][1];
-                        else {
-                            y = penta[i][1] * -1 + radio;
-                        }
-                        if (i === 0)
-                            y -= 50;
-                        else if (i === 1 || i === 4)
-                            y -= 20
+                        if (i < 5)
+                            return null;
                         return (
                             <StackItem key={i}
                                 name={value.name}
                                 points={value.points}
-                                topPct={value.topPct}
-                                x={offsetX + penta[i][0]}
-                                y={offsetY + y} />
+                                topPct={value.topPct} />
                         )
-                        // if (penta[i][1] >= 0)
-                        //     penta[i][1] = radio - penta[i][1];
-                        // else {
-                        //     penta[i][1] *= -1;
-                        //     penta[i][1] += radio;
-                        // }
-                        // if (i === 0)
-                        //     penta[i][1] -= 50;
-                        // return (
-                        //     <StackItem name={value.name}
-                        //         points={value.points}
-                        //         topPct={value.topPct}
-                        //         x={offsetX + penta[i][0]}
-                        //         y={offsetY + penta[i][1]} />
-                        // )
                     })}
-                {/* </Paper> */}
+                </List>
             </Paper>
             {/* 
             //      Soft Skills
@@ -368,6 +386,8 @@ const Profile = () => {
                         }}>
                     </img>
                     {nuweProfile.softSkills.map((value, i) => {
+                        if (i > 4)
+                            return null;
                         let y: number;
                         if (penta[i][1] >= 0)
                             y = radio - penta[i][1];
@@ -389,6 +409,22 @@ const Profile = () => {
                         )
                     })}
                 {/* </Paper> */}
+            </Paper>
+            <Paper style={{height: 180}} className={classes.carousel}>
+                <List className={"content"}>
+                    {nuweProfile.softSkills.map((value, i) => {
+                        if (i < 5)
+                            return null;
+                        return (
+                            <SoftSkillItem key={i}
+                                name={value.name}
+                                idx={i}
+                                points={value.points}
+                                topPoints={value.topPoints} 
+                            />
+                        )
+                    })}
+                </List>
             </Paper>
         </>
     )

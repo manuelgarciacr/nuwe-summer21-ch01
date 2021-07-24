@@ -1,46 +1,46 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { RootState } from "../../../app/store";
+import type { RootState } from "../../../../app/store";
 import { IdName } from "domain/model/IdName";
-import { SpecialityService } from "domain/services/Speciality.service";
+import { CompanyTypeService } from "domain/services/CompanyType.service";
 
-export interface SpecialityState {
+export interface CompanyTypeState {
     value: IdName[];
     status: "idle" | "loading" | 'succeeded' | "failed";
     error: string;
     currentRequestId: string;
 }
 
-const initialState: SpecialityState = {
+const initialState: CompanyTypeState = {
     value: [],
     status: "idle",
     error: "",
     currentRequestId: ""
 };
 
-export const fetchSpecialities = createAsyncThunk('speciality/fetchSpecialities', async () => {
-    const response = await SpecialityService.get()
+export const fetchCompanyTypes = createAsyncThunk('companyType/fetchCompanyTypes', async () => {
+    const response = await CompanyTypeService.get()
     return response
 })
 
-export const specialitySlice = createSlice({
-    name: "speciality",
+export const companyTypeSlice = createSlice({
+    name: "companyType",
     initialState,
     reducers: {
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchSpecialities.pending, (state, action) => {
+            .addCase(fetchCompanyTypes.pending, (state, action) => {
                 state.status = "loading";
                 state.currentRequestId = action.meta.requestId;
             })
-            .addCase(fetchSpecialities.fulfilled, (state, action) => {
+            .addCase(fetchCompanyTypes.fulfilled, (state, action) => {
                 if (action.meta.requestId === state.currentRequestId) {
                     state.status = "succeeded";
                     state.value = action.payload;
                     state.currentRequestId = "";
                 }
             })
-            .addCase(fetchSpecialities.rejected, (state, action) => {
+            .addCase(fetchCompanyTypes.rejected, (state, action) => {
                 if (action.meta.requestId === state.currentRequestId) {
                     state.status = "failed";
                     state.error = action.error.message || "";
@@ -50,5 +50,5 @@ export const specialitySlice = createSlice({
     },
 });
 
-export const selectSpecialities = (state: RootState) => state.speciality.value;
-export default specialitySlice.reducer;
+export const selectCompanyTypes = (state: RootState) => state.companyType.value;
+export default companyTypeSlice.reducer;

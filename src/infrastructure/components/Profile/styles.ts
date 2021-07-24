@@ -36,10 +36,16 @@ const useStyles = makeStyles((theme: Theme) =>
             width: theme.spacing(21),
             height: theme.spacing(21)
         },
+        editIcon: {
+            position: "absolute",
+            top: 0,
+            right: 0
+        },
         generalCardName: {
             marginTop: theme.spacing(2),
         },
         generalCardContent: {
+            position: "relative",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -132,6 +138,11 @@ const useStyles = makeStyles((theme: Theme) =>
                 gap: 5,
                 height: 160
             }
+        },
+        modal: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
         }
     })
 );

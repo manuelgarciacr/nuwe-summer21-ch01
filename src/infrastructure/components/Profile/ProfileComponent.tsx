@@ -2,9 +2,13 @@ import React from "react";
 
 import { LocationIcon, GithubIcon, LinkedInIcon, GitlabIcon, BehanceIcon } from "../Icons/Icons";
 import useStyles from "./styles";
-import Pentagon from '../../assets/img/pentagon3.svg';
 import StackItem from "../StackItem/StackItemComponent";
-import SoftSkillItem from "../SoftSkillItem/SoftSkillItemComponent";
+import PersonalData from '../PersonalData/PersonalDataComponent';
+import { PersonalProfile } from "domain/model/PersonalProfile";
+import { NuweProfile } from "domain/model/NuweProfile";
+import { IdName } from "domain/model/IdName";
+import { getPeriod } from "app/utils";
+import Skills from "../Skills/SkillsComponent";
 
 import Card from "@material-ui/core/Card";
 import BusinessIcon from '@material-ui/icons/Business';
@@ -13,6 +17,7 @@ import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import LanguageIcon from '@material-ui/icons/Language';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import InsertChartOutlinedIcon from '@material-ui/icons/InsertChartOutlined';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { useTheme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -20,85 +25,33 @@ import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import Hidden from "@material-ui/core/Hidden";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import List from "@material-ui/core/List";
+import Modal from "@material-ui/core/Modal";
 
 // Redux
-import { useWindowDimensions } from "app/hooks";
 import { useAppSelector, useAppDispatch } from 'app/hooks'
-import { fetchPersonalProfile, selectPersonalProfile } from "./personalProfileSlice";
-import { fetchNuweProfile, selectNuweProfile } from "./nuweProfileSlice";
-import { fetchSpecialities, selectSpecialities } from "./specialitySlice";
-import { fetchSpecialityLevels, selectSpecialityLevels } from "./specialityLevelSlice";
-import { fetchCompanyTypes, selectCompanyTypes } from "./companyTypeSlice";
-import { PersonalProfile } from "domain/model/PersonalProfile";
-import { NuweProfile } from "domain/model/NuweProfile";
-import { IdName } from "domain/model/IdName";
+import { fetchPersonalProfile, selectPersonalProfile } from "./slices/personalProfileSlice";
+import { fetchNuweProfile, selectNuweProfile } from "./slices/nuweProfileSlice";
+import { fetchSpecialities, selectSpecialities } from "./slices/specialitySlice";
+import { fetchSpecialityLevels, selectSpecialityLevels } from "./slices/specialityLevelSlice";
+import { fetchCompanyTypes, selectCompanyTypes } from "./slices/companyTypeSlice";
 
 const Profile = () => {
     const theme = useTheme();
     const classes = useStyles();
-    const {width } = useWindowDimensions();
-    const notMobile = useMediaQuery(theme.breakpoints.up('sm'));
-    // TODO: Add to an utility modul
-    const getPeriod = (from: Date | string, to: Date | string) => {
-        let f: Date, t: Date;
-        let res: string;
-        
-        console.log("FF", typeof from, from)
-        console.log("TT", typeof to, to)
-        if (typeof from === "string")
-            f = new Date(from);
-        else
-            f = from;
-        if (typeof to === "string")
-            t = new Date(to);
-        else
-            t = to;
-        const time = f.getTime() - t.getTime();
-        if (Math.abs(time) <= 60 * 1000 )
-            return "ahora";
-        if (time > 0)
-            res = "hace ";
-        else
-            res = "dentro de ";
-        const min = Math.round(Math.abs(time) / (60 * 1000));
-        if (min < 60) {
-            if (min === 1)
-                return res + "un minuto";
-            else
-                return res + min + " minutos";
-        }
-        const hor = Math.round(min / 60);
-        if (hor < 24) {
-            if (hor === 1)
-                return res + "una hora";
-            else
-                return res + hor + " horas";
-        }
-        const dias = Math.round(hor / 24);
-        if (dias < 31) {
-            if (dias === 1) {
-                if (time > 0)
-                    return "ayer";
-                else
-                    return "mañana";
-            } else {
-                return res + dias + " días";
-            }
-        }
-        const meses = Math.round(dias / 30);
-        if (meses < 12) {
-            if (meses === 1)
-                return res + "un mes";
-            else
-                return res + hor + " meses";
-        }
-        return "más de un año";
-    }
+    const [open, setOpen] = React.useState<string | null>(null);
+    const handleOpen = (component: string) => {
+        setOpen(component);
+    };
 
+    const handleClose = () => {
+        setOpen(null);
+    };
+    
+    ///////////////////////////////////////////////////////////
     // Redux
+    //
+
     const dispatch = useAppDispatch()
     const personalProfile = useAppSelector(selectPersonalProfile) as PersonalProfile;
     const nuweProfile = useAppSelector(selectNuweProfile) as NuweProfile;
@@ -136,8 +89,7 @@ const Profile = () => {
         };
         if (!isReady)
             constructor();
-            
-    }, [dispatch, isReady]);
+    }, [isReady, dispatch]);
 
     if (!isReady)
         return null;
@@ -157,30 +109,11 @@ const Profile = () => {
             </div>)
     else if (failed)
         return(<div className={classes.loadingError}>{personalProfileError}{nuweProfileError}</div>)   
-    // Skills render position calculations
-    const calcPentagon = (n: number, r: number) => {
-        const penta: [x: number, y: number][] = [];
-        for (let i = 0; i < n; i++) {
-            const x = r * Math.sin(2 * Math.PI * i / n);
-            const y = r * Math.cos(2 * Math.PI * i / n);
-            penta.push([x, y]);
-        }
-        return penta;
-    }
-    const offsetX = (width - (notMobile ? 290 : 0)) / 2 - 50;
-    const radio = offsetX > 250 ? 250 : offsetX
-    const offsetY = 70;
-    const penta = calcPentagon(5, radio);
-    const hardSkillsHeight = nuweProfile.hardSkills.length === 0
-        ? 0
-        : nuweProfile.hardSkills.length > 2 
-        ? 3 * radio + 120 // 3, 4 or 5
-        : 2 * radio + 120 // 1 or 2
-    const softSkillsHeight = nuweProfile.softSkills.length === 0
-        ? 0
-        : nuweProfile.softSkills.length > 2 
-        ? 3 * radio + 120
-        : 2 * radio + 120
+    
+    //
+    // Redux
+    //
+    ///////////////////////////////////////////////////////////
 
     return (
         <>
@@ -201,6 +134,10 @@ const Profile = () => {
                         alt="Avatar del usuario"
                         style={{width: theme.spacing(21), height: theme.spacing(21)}} // CSS problem. Size lost after first render
                         src={personalProfile.avatar} />
+                    <div  className={classes.editIcon} onClick={() => handleOpen("personalData")}>
+                        <EditOutlinedIcon />
+                    </div>  
+
                     <Typography variant="h4" className={classes.generalCardName}>{personalProfile.username}</Typography>
                     <div className={classes.inline}>
                         <Typography variant="h6">{personalProfile.email} | {personalProfile.tel}</Typography>
@@ -307,125 +244,20 @@ const Profile = () => {
             {/* 
             //      Hard Skills
             */}
-            <div style={{textAlign: "left"}}>
-                {/* <Typography variant="h6" className="caption">Hard skills validadas en NUWE</Typography>             */}
-            </div>
-            {/* TODO: Put the skills in its own component */}
-            <Paper className={classes.skills} style={{height: hardSkillsHeight}} variant="outlined" >
-                <div style={{textAlign: "center"}}>
-                    <Typography variant="h6">Top 5 hard skills</Typography>
-                </div>
-                <img className={classes.pentagon}
-                    src={Pentagon}
-                    alt="Pentágono"
-                    style={{
-                        width: radio,
-                        transform: `translate(
-                            ${offsetX - (radio / 2) + 50}px, 
-                            ${offsetY + radio - 90}px
-                        )`
-                    }}>
-                </img>
-                {nuweProfile.hardSkills.map((value, i) => {
-                    if (i > 4)
-                        return null;
-                    let y: number;
-                    if (penta[i][1] >= 0)
-                        y = radio - penta[i][1];
-                    else {
-                        y = penta[i][1] * -1 + radio;
-                    }
-                    if (i === 0)
-                        y -= 50;
-                    else if (i === 1 || i === 4)
-                        y -= 20
-                    return (
-                        <StackItem key={i}
-                            name={value.name}
-                            points={value.points}
-                            topPct={value.topPct}
-                            x={offsetX + penta[i][0]}
-                            y={offsetY + y} />
-                    )
-                })}
-            </Paper>
-            <Paper style={{height: 180}} className={classes.carousel}>
-                <List className={"content"}>
-                    {nuweProfile.hardSkills.map((value, i) => {
-                        if (i < 5)
-                            return null;
-                        return (
-                            <StackItem key={i}
-                                name={value.name}
-                                points={value.points}
-                                topPct={value.topPct} />
-                        )
-                    })}
-                </List>
-            </Paper>
+            <Skills title="Top 5 hard skills" skills={nuweProfile.hardSkills} />
             {/* 
             //      Soft Skills
             */}
-            <div style={{textAlign: "left"}}>
-                {/* <Typography variant="h6" className="caption">Soft skills validadas en NUWE</Typography>             */}
-            </div>
-            <Paper className={classes.skills} style={{height: softSkillsHeight}} variant="outlined" >
-                <div style={{textAlign: "center"}}>
-                    <Typography variant="h6">Puntuaciones retos grupales</Typography>
+            <Skills title="Puntuaciones retos grupales" skills={nuweProfile.softSkills} />            
+            <Modal
+                open={open !== null}
+                onClose={handleClose}
+                className={classes.modal}
+                >
+                <div>
+                    {open === "personalData" && <PersonalData/>}
                 </div>
-                {/* <Paper className={ `className="container" ${classes.skills}`} style={{height: 3 * radio}}> */}
-                    <img className={classes.pentagon}
-                        src={Pentagon}
-                        alt="Pentágono"
-                        style={{
-                            width: radio,
-                            transform: `translate(
-                                ${offsetX - (radio / 2) + 50}px, 
-                                ${offsetY + radio - 90}px
-                            )`
-                        }}>
-                    </img>
-                    {nuweProfile.softSkills.map((value, i) => {
-                        if (i > 4)
-                            return null;
-                        let y: number;
-                        if (penta[i][1] >= 0)
-                            y = radio - penta[i][1];
-                        else {
-                            y = penta[i][1] * -1 + radio;
-                        }
-                        if (i === 0)
-                            y -= 50;
-                        else if (i === 1 || i === 4)
-                            y -= 20
-                        return (
-                            <SoftSkillItem key={i}
-                                name={value.name}
-                                idx={i}
-                                points={value.points}
-                                topPoints={value.topPoints}
-                                x={offsetX + penta[i][0]}
-                                y={offsetY + y} />
-                        )
-                    })}
-                {/* </Paper> */}
-            </Paper>
-            <Paper style={{height: 180}} className={classes.carousel}>
-                <List className={"content"}>
-                    {nuweProfile.softSkills.map((value, i) => {
-                        if (i < 5)
-                            return null;
-                        return (
-                            <SoftSkillItem key={i}
-                                name={value.name}
-                                idx={i}
-                                points={value.points}
-                                topPoints={value.topPoints} 
-                            />
-                        )
-                    })}
-                </List>
-            </Paper>
+            </Modal>
         </>
     )
 }

@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import personalProfileReducer from '../infrastructure/components/Profile/personalProfileSlice'
-import nuweProfileReducer from '../infrastructure/components/Profile/nuweProfileSlice'
-import specialityReducer from '../infrastructure/components/Profile/specialitySlice'
-import specialityLevelReducer from '../infrastructure/components/Profile/specialityLevelSlice'
-import companyTypeReducer from '../infrastructure/components/Profile/companyTypeSlice'
+import personalProfileReducer from '../infrastructure/components/Profile/slices/personalProfileSlice'
+import nuweProfileReducer from '../infrastructure/components/Profile/slices/nuweProfileSlice'
+import specialityReducer from '../infrastructure/components/Profile/slices/specialitySlice'
+import specialityLevelReducer from '../infrastructure/components/Profile/slices/specialityLevelSlice'
+import companyTypeReducer from '../infrastructure/components/Profile/slices/companyTypeSlice'
 
 export const store = configureStore({
     reducer: {

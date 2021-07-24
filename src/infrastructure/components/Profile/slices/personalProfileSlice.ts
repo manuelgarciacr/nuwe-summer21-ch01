@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RootState, store } from "../../../app/store";
+import { RootState, store } from "../../../../app/store";
 import { PersonalProfile } from "domain/model/PersonalProfile";
 import { PersonalProfileService } from "domain/services/PersonalProfile.service";
 

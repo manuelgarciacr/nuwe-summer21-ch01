@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { RootState } from "../../../app/store";
+import type { RootState } from "../../../../app/store";
 import { IdName } from "domain/model/IdName";
 import { SpecialityLevelService } from "domain/services/SpecialityLevel.service";
 

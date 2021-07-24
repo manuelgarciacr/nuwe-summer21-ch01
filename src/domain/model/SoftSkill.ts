@@ -26,5 +26,9 @@ class SoftSkill implements ISoftSkill {
     get topPoints(): number {
         return this.#topPoints;
     }
+
+    get type(): string {
+        return "SoftSkill";
+    }
 }
 export default SoftSkill;

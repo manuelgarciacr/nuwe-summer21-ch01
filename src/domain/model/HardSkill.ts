@@ -26,5 +26,9 @@ class HardSkill implements IHardSkill {
     get topPct(): number {
         return this.#topPct;
     }
+
+    get type(): string {
+        return "HardSkill";
+    }
 }
 export default HardSkill;

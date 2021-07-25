@@ -46,7 +46,7 @@ const Profile = () => {
     const theme = useTheme();
     const classes = useStyles();
     const [open, setOpen] = React.useState<string | null>(null);
-    const getName = (id: number, arr: IdName[]) => 
+    const getName = (id: number, arr: IdName[]) =>
         arr.find(v => v.id === id)?.name || "";
     
     const handleOpen = (component: string) => {
@@ -124,12 +124,12 @@ const Profile = () => {
     if (!isReady)
         return null;
 
-    const loading = personalProfileStatus === "loading" 
+    const loading = personalProfileStatus === "loading"
         || nuweProfileStatus === "loading"
         || specialityStatus === "loading"
         || specialityLevelStatus === "loading"
         || companyTypeStatus === "loading";
-    const failed = personalProfileStatus === "failed" 
+    const failed = personalProfileStatus === "failed"
         || nuweProfileStatus === "failed";
         // Even if specialities, speciality levels or company types failed the app continues
     if (loading)
@@ -138,7 +138,7 @@ const Profile = () => {
                 <Typography variant="h4">Loading...</Typography>
             </div>)
     else if (failed)
-        return(<div className={classes.loadingError}>{personalProfileError}{nuweProfileError}</div>)   
+        return(<div className={classes.loadingError}>{personalProfileError}{nuweProfileError}</div>)
     
     //
     // Redux
@@ -148,7 +148,7 @@ const Profile = () => {
     return (
         <>
             <Card className={classes.generalCard}>
-                {/* 
+                {/*
                 //      Header
                 */}
                 <div style={{marginTop: 55, marginRight: 15}} className={classes.editIcon} onClick={() => handleOpen("Imagen de Cabecera")}>
@@ -159,17 +159,17 @@ const Profile = () => {
                     image={personalProfile.headerImage}
                     title="Imagen de fondo"
                 />
-                {/* 
+                {/*
                 //      Personal information
                 */}
                 <CardContent className={classes.generalCardContent}>
-                    <Avatar className={classes.generalCardAvatar} 
+                    <Avatar className={classes.generalCardAvatar}
                         alt="Avatar del usuario"
                         style={{width: theme.spacing(21), height: theme.spacing(21)}} // CSS problem. Size lost after first render
                         src={personalProfile.avatar} />
                     <div  className={classes.editIcon} onClick={() => handleOpen("Datos Personales")}>
                         <EditOutlinedIcon />
-                    </div>  
+                    </div>
 
                     <Typography variant="h4" className={classes.generalCardName}>{personalProfile.username}</Typography>
                     <div className={classes.inline}>
@@ -180,24 +180,24 @@ const Profile = () => {
                     </div>
                      <Typography variant="h6">{personalProfile.biography}</Typography>
                     <div className={classes.inline} >
-                        {personalProfile.github && 
+                        {personalProfile.github &&
                             <Link className={classes.animation} href={personalProfile.github} target="_blank" >
                                 <GithubIcon className="icon" viewBox="0 0 150 150" />
                             </Link>
                         }
                         {personalProfile.linkedin && 
                             <Link className={classes.animation} href={personalProfile.linkedin} target="_blank" >
-                                <LinkedInIcon className="icon" viewBox="0 0 150 150" /> 
+                                <LinkedInIcon className="icon" viewBox="0 0 150 150" />
                             </Link>
                         }
-                        {personalProfile.gitlab && 
+                        {personalProfile.gitlab &&
                             <Link className={classes.animation} href={personalProfile.gitlab} target="_blank" >
-                                <GitlabIcon className="icon" viewBox="0 0 150 150" /> 
+                                <GitlabIcon className="icon" viewBox="0 0 150 150" />
                             </Link>
                         }
-                        {personalProfile.behance && 
+                        {personalProfile.behance &&
                             <Link className={classes.animation} href={personalProfile.behance} target="_blank" >
-                                <BehanceIcon className={["icon", "large"]} viewBox="0 0 64 64" /> 
+                                <BehanceIcon className={["icon", "large"]} viewBox="0 0 64 64" />
                             </Link>
                         }
                         <div className="iconned">
@@ -211,13 +211,13 @@ const Profile = () => {
                     {personalProfile.getOffers &&
                         <Typography variant="h4">Buscando trabajo de {personalProfile.job} en {personalProfile.jobPlace}</Typography>
                     }
-                    {/* 
+                    {/*
                     //      Stack
                     */}
                     <Paper style={{position: "relative"}} className="paper" variant="outlined" >
                         <div style={{marginRight: -5, marginTop: 20}} className={classes.editIcon} onClick={() => handleOpen("Stack")}>
                             <EditOutlinedIcon/>
-                        </div>                        
+                        </div>
                         <Hidden smUp implementation="css">
                             <Typography className="caption" variant="h6">Stack</Typography>
                         </Hidden>
@@ -232,7 +232,7 @@ const Profile = () => {
                     </Paper>
                 </CardContent>
             </Card>
-            {/* 
+            {/*
             //      Job
             */}
             <Card className={classes.generalCard}>
@@ -259,7 +259,7 @@ const Profile = () => {
                                 <FlightTakeoffIcon className="icon" />
                                 <Typography variant="h6">Disponibilidad para viajar</Typography>
                             </div>
-                        }   
+                        }
                         {personalProfile.remotelyWork &&
                             <div className="iconned">
                                 <LanguageIcon className="icon" />
@@ -275,7 +275,7 @@ const Profile = () => {
                     </div>
                 </CardContent>
             </Card>
-            {/* 
+            {/*
             //      Tab menu
             */}
             <div className={classes.inline} >
@@ -284,7 +284,7 @@ const Profile = () => {
                 <Typography variant="h6" style={{ marginLeft: "2rem" }}>Social</Typography>
             </div>
             <div className={classes.separator}></div>
-            {/* 
+            {/*
             //      Score
             */}
             <Hidden xsDown implementation="css">
@@ -298,14 +298,14 @@ const Profile = () => {
                     </div>
                 </div>
             </Hidden>
-            {/* 
+            {/*
             //      Hard Skills
             */}
             <Skills title="Top 5 hard skills" skills={nuweProfile.hardSkills} />
-            {/* 
+            {/*
             //      Soft Skills
             */}
-            <Skills title="Puntuaciones retos grupales" skills={nuweProfile.softSkills} />            
+            <Skills title="Puntuaciones retos grupales" skills={nuweProfile.softSkills} />
             <Dialog
                 open={open !== null}
                 onClose={handleClose}

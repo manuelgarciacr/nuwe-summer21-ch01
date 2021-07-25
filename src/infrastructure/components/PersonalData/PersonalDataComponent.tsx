@@ -111,7 +111,7 @@ const PersonalData = (props: IProps) => {
                 <Typography variant="subtitle2">URL de tu portfolio personal:</Typography>
                 <RenderInput id="website" label="https://" value={values["website"]} hc={handleChange} />
                 <Button onClick={() => handleSave(values)} 
-                    style={{color: theme.palette.primary.contrastText}}
+                    // style={{color: theme.palette.primary.contrastText}}
                     className={classes.button}>GUARDAR</Button>
             </form >
         </Paper>

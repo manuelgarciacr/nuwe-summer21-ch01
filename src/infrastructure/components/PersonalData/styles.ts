@@ -38,8 +38,8 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.palette.primary.contrastText,
             transition: "transform 300ms",
             "&:hover": {
-                transform: "translate(0,-15%)",
-                backgroundColor: theme.palette.warning.main
+                transform: "translate(0,-15%)!important",
+                backgroundColor: theme.palette.warning.light
             },       
         }
 

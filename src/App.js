@@ -32,10 +32,18 @@ let theme = createTheme({
         h4: {
             fontWeight: "bold"
         },
+        // h6: {
+        //     fontWeight: "bold"
+        // },
         subtitle1: {
             // fontFamily: 'Montserrat, sans-serif',
             fontSize: 20,
             fontWeight: 'bold'
+        },
+        subtitle2: {
+            // fontFamily: 'Montserrat, sans-serif',
+            //fontSize: 20,
+            fontWeight: '300'
         },
     }
 });

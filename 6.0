@@ -1,0 +1,25 @@
+yarn add v1.22.10
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+info fsevents@2.3.2: The platform "win32" is incompatible with this module.
+info "fsevents@2.3.2" is an optional dependency and failed compatibility check. Excluding it from installation.
+info fsevents@1.2.13: The platform "win32" is incompatible with this module.
+info "fsevents@1.2.13" is an optional dependency and failed compatibility check. Excluding it from installation.
+[3/4] Linking dependencies...
+[4/4] Building fresh packages...
+success Saved lockfile.
+success Saved 10 new dependencies.
+info Direct dependencies
+└─ @react-three/fiber@7.0.6
+info All dependencies
+├─ @react-three/fiber@7.0.6
+├─ debounce@1.2.1
+├─ react-merge-refs@1.1.0
+├─ react-reconciler@0.26.2
+├─ react-three-fiber@0.0.0-deprecated
+├─ react-use-measure@2.0.4
+├─ resize-observer-polyfill@1.5.1
+├─ use-asset@1.0.4
+├─ utility-types@3.10.0
+└─ zustand@3.5.7
+Done in 14.51s.

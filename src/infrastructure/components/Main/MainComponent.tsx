@@ -16,11 +16,9 @@ import Typography from '@material-ui/core/Typography';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import { BrowserRouter, BrowserRouter as Router, Link, Redirect, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Link, Redirect, Route, Switch } from 'react-router-dom';
 
 import useStyles from './styles';
-// import Another from '../Another/AnotherComponent';
-// import Profile from '../Profile/ProfileComponent';
 
 import logo from '../../assets/img/Nuwe_Mono_white.png';
 import letters from '../../assets/img/Nuwe_Letters_white.png';
@@ -57,25 +55,25 @@ const Main = (props: any) => {
                 </>}
             </div>
             <Divider />
-                <List>
-                    <ListItem button key={'panel'} onClick={closeDrawer} component={Link} to="/panel">
-                        <ListItemIcon><HomeIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
-                        <ListItemText primary={<Typography variant="subtitle1">Panel</Typography>} />
-                    </ListItem>
-                    <ListItem button key={'enterprises'} onClick={closeDrawer} component={Link} to="/enterprises">
-                        <ListItemIcon><WorkIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
-                        {/* <ListItemText primary={<Typography variant="subtitle1" style={{ color: '#ff6f00' }}>Empresas</Typography>}/> */}
-                        <ListItemText primary={<Typography variant="subtitle1">Empresas</Typography>} />
-                    </ListItem>
-                    <ListItem button key={'profile'} onClick={closeDrawer} component={Link} to="/profile">
-                        <ListItemIcon><ProfileIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
-                        <ListItemText primary={<Typography variant="subtitle1">Perfil</Typography>} />
-                    </ListItem>
-                    <ListItem button key={'contact'} onClick={closeDrawer} component={Link} to="/contact">
-                        <ListItemIcon><ContactIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
-                        <ListItemText primary={<Typography variant="subtitle1">Contacto</Typography>} />
-                    </ListItem>
-                </List>
+            <List>
+                <ListItem className={classes.animation} button key={'panel'} onClick={closeDrawer} component={Link} to="/panel">
+                    <ListItemIcon><HomeIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
+                    <ListItemText primary={<Typography variant="subtitle1">Panel</Typography>} />
+                </ListItem>
+                <ListItem className={classes.animation} button key={'enterprises'} onClick={closeDrawer} component={Link} to="/enterprises">
+                    <ListItemIcon><WorkIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
+                    {/* <ListItemText primary={<Typography variant="subtitle1" style={{ color: '#ff6f00' }}>Empresas</Typography>}/> */}
+                    <ListItemText primary={<Typography variant="subtitle1">Empresas</Typography>} />
+                </ListItem>
+                <ListItem className={classes.animation} button key={'profile'} onClick={closeDrawer} component={Link} to="/profile">
+                    <ListItemIcon><ProfileIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
+                    <ListItemText primary={<Typography variant="subtitle1">Perfil</Typography>} />
+                </ListItem>
+                <ListItem className={classes.animation} button key={'contact'} onClick={closeDrawer} component={Link} to="/contact">
+                    <ListItemIcon><ContactIcon className={classes.icon} viewBox="0 0 101 100" /></ListItemIcon>
+                    <ListItemText primary={<Typography variant="subtitle1">Contacto</Typography>} />
+                </ListItem>
+            </List>
             <Divider />
         </div>
     );

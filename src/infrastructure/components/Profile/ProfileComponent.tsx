@@ -9,6 +9,7 @@ import { NuweProfile } from "domain/model/NuweProfile";
 import { IdName } from "domain/model/IdName";
 import { getPeriod } from "app/utils";
 import Skills from "../Skills/SkillsComponent";
+import StackData from "../StackData/StackDataComponent";
 
 import Card from "@material-ui/core/Card";
 import BusinessIcon from '@material-ui/icons/Business';
@@ -26,7 +27,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import Hidden from "@material-ui/core/Hidden";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Modal from "@material-ui/core/Modal";
 
 // Redux
 import { useAppSelector, useAppDispatch } from 'app/hooks'
@@ -35,11 +35,20 @@ import { fetchNuweProfile, selectNuweProfile } from "./slices/nuweProfileSlice";
 import { fetchSpecialities, selectSpecialities } from "./slices/specialitySlice";
 import { fetchSpecialityLevels, selectSpecialityLevels } from "./slices/specialityLevelSlice";
 import { fetchCompanyTypes, selectCompanyTypes } from "./slices/companyTypeSlice";
+import { putPersonalProfile } from './slices/personalProfileSlice';
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Link from "@material-ui/core/Link";
+import Photo from "../Photo/PhotoComponent";
 
 const Profile = () => {
     const theme = useTheme();
     const classes = useStyles();
     const [open, setOpen] = React.useState<string | null>(null);
+    const getName = (id: number, arr: IdName[]) => 
+        arr.find(v => v.id === id)?.name || "";
+    
     const handleOpen = (component: string) => {
         setOpen(component);
     };
@@ -48,6 +57,29 @@ const Profile = () => {
         setOpen(null);
     };
     
+    const handleSave = (values: {[k: string]: any}) => {
+        const changes = JSON.stringify(values) !== JSON.stringify(personalProfile);
+        if (changes)
+            dispatch(putPersonalProfile(values));
+        handleClose();
+    }
+
+    const handleSaveStack = (values: string[]) => {
+        const v = personalProfile.stack;
+        const changes = v.some(val => values.indexOf(val) < 0);
+        if (changes ||  v.length !== values.length)
+            dispatch(putPersonalProfile({...personalProfile, stack: values}));
+        handleClose();
+    }
+    
+    const handleSavePhoto = (value: string) => {
+        alert(value)
+        // const v = personalProfile.stack;
+        // const changes = v.some(val => values.indexOf(val) < 0);
+        // if (changes ||  v.length !== values.length)
+        //     dispatch(putPersonalProfile({...personalProfile, stack: values}));
+        handleClose();
+    }
     ///////////////////////////////////////////////////////////
     // Redux
     //
@@ -68,11 +100,9 @@ const Profile = () => {
     const personalProfileError = useAppSelector(state => state.personalProfile.error)
     const nuweProfileError = useAppSelector(state => state.nuweProfile.error)
 
-    const getName = (id: number, arr: IdName[]) => 
-        arr.find(v => v.id === id)?.name || "";
 
     const [isReady, setReady] = React.useState(false);
-
+    
     React.useEffect(() => {
         const constructor = async () => {
             try {
@@ -121,6 +151,9 @@ const Profile = () => {
                 {/* 
                 //      Header
                 */}
+                <div style={{marginTop: 55, marginRight: 15}} className={classes.editIcon} onClick={() => handleOpen("Imagen de Cabecera")}>
+                        <EditOutlinedIcon />
+                </div>
                 <CardMedia
                     className={classes.generalCardMedia}
                     image={personalProfile.headerImage}
@@ -134,7 +167,7 @@ const Profile = () => {
                         alt="Avatar del usuario"
                         style={{width: theme.spacing(21), height: theme.spacing(21)}} // CSS problem. Size lost after first render
                         src={personalProfile.avatar} />
-                    <div  className={classes.editIcon} onClick={() => handleOpen("personalData")}>
+                    <div  className={classes.editIcon} onClick={() => handleOpen("Datos Personales")}>
                         <EditOutlinedIcon />
                     </div>  
 
@@ -147,20 +180,44 @@ const Profile = () => {
                     </div>
                      <Typography variant="h6">{personalProfile.biography}</Typography>
                     <div className={classes.inline} >
-                        {personalProfile.github && <GithubIcon className="icon" viewBox="0 0 150 150" />}
-                        {personalProfile.linkedin && <LinkedInIcon className="icon" viewBox="0 0 150 150" />}
-                        {personalProfile.gitlab && <GitlabIcon className="icon" viewBox="0 0 150 150" />}
-                        {personalProfile.behance && <BehanceIcon className={["icon", "large"]} viewBox="0 0 64 64" />}
+                        {personalProfile.github && 
+                            <Link className={classes.animation} href={personalProfile.github} target="_blank" >
+                                <GithubIcon className="icon" viewBox="0 0 150 150" />
+                            </Link>
+                        }
+                        {personalProfile.linkedin && 
+                            <Link className={classes.animation} href={personalProfile.linkedin} target="_blank" >
+                                <LinkedInIcon className="icon" viewBox="0 0 150 150" /> 
+                            </Link>
+                        }
+                        {personalProfile.gitlab && 
+                            <Link className={classes.animation} href={personalProfile.gitlab} target="_blank" >
+                                <GitlabIcon className="icon" viewBox="0 0 150 150" /> 
+                            </Link>
+                        }
+                        {personalProfile.behance && 
+                            <Link className={classes.animation} href={personalProfile.behance} target="_blank" >
+                                <BehanceIcon className={["icon", "large"]} viewBox="0 0 64 64" /> 
+                            </Link>
+                        }
                         <div className="iconned">
                             <LocationIcon className="icon" viewBox="0 0 101 100" />
                             <Typography variant="h6">{personalProfile.city}, {personalProfile.country}</Typography>
                         </div>
-                        <Typography variant="h6">Última conexión {getPeriod(new Date(), personalProfile.lastConnection)}</Typography>
+                        {personalProfile.lastConnection !== "" &&
+                            <Typography variant="h6">Última conexión {getPeriod(new Date(), personalProfile.lastConnection)}</Typography>
+                        }
                     </div>
                     {personalProfile.getOffers &&
                         <Typography variant="h4">Buscando trabajo de {personalProfile.job} en {personalProfile.jobPlace}</Typography>
                     }
-                    <Paper className="paper" variant="outlined" >
+                    {/* 
+                    //      Stack
+                    */}
+                    <Paper style={{position: "relative"}} className="paper" variant="outlined" >
+                        <div style={{marginRight: -5, marginTop: 20}} className={classes.editIcon} onClick={() => handleOpen("Stack")}>
+                            <EditOutlinedIcon/>
+                        </div>                        
                         <Hidden smUp implementation="css">
                             <Typography className="caption" variant="h6">Stack</Typography>
                         </Hidden>
@@ -249,15 +306,31 @@ const Profile = () => {
             //      Soft Skills
             */}
             <Skills title="Puntuaciones retos grupales" skills={nuweProfile.softSkills} />            
-            <Modal
+            <Dialog
                 open={open !== null}
                 onClose={handleClose}
-                className={classes.modal}
+                className={classes.dialog}
+                scroll={"paper"}
+                aria-labelledby="scroll-dialog-title"
+                aria-describedby="scroll-dialog-description"
+                disableEnforceFocus
                 >
-                <div>
-                    {open === "personalData" && <PersonalData/>}
-                </div>
-            </Modal>
+                <DialogTitle id="scroll-dialog-title">{open}</DialogTitle>
+                <DialogContent dividers={true}>
+                    {open === "Datos Personales" &&
+                        <PersonalData profile={personalProfile}
+                            specialities={specialities} specialityLevels={specialityLevels}
+                            handleSave={(values: { [k: string]: any; }) => handleSave(values)}/>
+                    }
+                    {open === "Stack" &&
+                        <StackData stack={personalProfile.stack}
+                            handleSave={(values: string[]) => handleSaveStack(values)}/>
+                    }
+                    {open === "Imagen de Cabecera" &&
+                        <Photo handleSave={(value: string) => handleSavePhoto(value)}/>
+                    }
+                </DialogContent>
+            </Dialog>
         </>
     )
 }

@@ -4,15 +4,24 @@ import { IPersonalProfile } from "infrastructure/repositories/personalProfile";
 import { ISpeciality } from "infrastructure/repositories/speciality";
 import { ISpecialityLevel } from "infrastructure/repositories/specialityLevel";
 
+let BASE_URL: string;
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    BASE_URL="http://localhost:3001/";
+} else {
+    BASE_URL="http://manuelgc.eu:3001/";
+}
 const get = async <T>(url: string) => 
-    fetch('http://localhost:3001/' + url, {
+    fetch(BASE_URL + url, {
         method: 'GET',
     }).then(res1 => res1.json().then(res => ({status: res1.status, data: res as T})))
 
-const put = async <T>(url: string, data: T) => 
-    fetch('http://localhost:3001/' + url, {
+const put = async <T>(url: string, data: T) =>
+    fetch(BASE_URL + url, {
         method: 'PUT',
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        headers:{
+            'Content-Type': 'application/json'
+        }    
     }).then(res1 => res1.json().then(res => ({status: res1.status, data: res as T})))
 
 interface IHttpAdapter extends IPersonalProfile, INuweProfile, 

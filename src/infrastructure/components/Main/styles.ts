@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
             [theme.breakpoints.up("sm")]: {
                 width: `calc(100vw - ${drawerWidth}px)`,
                 marginLeft: drawerWidth,
-                backgroundColor: "transparent"
+                backgroundColor: "transparent",
             },
             //backgroundColor: "transparent",
             border: "none",
@@ -28,13 +28,13 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: "row",
             justifyContent: "space-between",
             [theme.breakpoints.up("sm")]: {
-                justifyContent: "flex-end"
+                justifyContent: "flex-end",
             },
-            '& div.logoContainer': {
-                '& img': {
+            "& div.logoContainer": {
+                "& img": {
                     height: "30px",
-                    margin: 5
-                }
+                    margin: 5,
+                },
             },
         },
         menuButton: {
@@ -49,17 +49,17 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         configButton: {
             [theme.breakpoints.up("sm")]: {
-                color: theme.palette.primary.main
+                color: theme.palette.primary.main,
             },
         },
         // necessary for content to be below app bar
         toolbar: theme.mixins.toolbar,
         logo: {
             height: "40px",
-            margin: 20
+            margin: 20,
         },
         icon: {
-            fontSize: 32
+            fontSize: 32,
         },
         drawerPaper: {
             width: drawerWidth,
@@ -67,7 +67,18 @@ const useStyles = makeStyles((theme: Theme) =>
         content: {
             flexGrow: 1,
             [theme.breakpoints.up("sm")]: {
-                padding: theme.spacing(3)
+                padding: theme.spacing(3),
+            },
+        },
+        animation: {
+                        // transition: "background 1s, color 1s",
+            // "&:hover": {
+            //     backgroundColor: "#000",
+            //     color: "#fff",
+            // },
+            transition: "transform 300ms",
+            "&:hover": {
+                transform: 'translate(0,-15%)',
             },
         },
     })

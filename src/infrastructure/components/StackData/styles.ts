@@ -10,28 +10,11 @@ const useStyles = makeStyles((theme: Theme) =>
             // width: "80vw",
             maxWidth: theme.spacing(60)
         },
-        title: {
-            marginLeft: 20, 
-            fontWeight: "bolder"
-        },
         form: {
            display: "flex",
            flexDirection: "column",
            gap: theme.spacing(2),
            //padding: theme.spacing(2)
-        },
-        formControl: {
-            flex: 1
-        },
-        inlineControls: {
-            display: "flex",
-            gap: theme.spacing(1),
-            [theme.breakpoints.down("sm")]: {
-                flexDirection: "column"
-            },
-            [theme.breakpoints.up("sm")]: {
-                flexDirection: "row"
-            }        
         },
         button: {
             backgroundColor: theme.palette.primary.main,
@@ -41,8 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 transform: "translate(0,-15%)",
                 backgroundColor: theme.palette.warning.main
             },       
-        }
-
+        },
     })
 );
 

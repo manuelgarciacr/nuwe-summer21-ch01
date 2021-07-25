@@ -47,6 +47,7 @@ let theme = createTheme({
         },
     }
 });
+
 theme = responsiveFontSizes(theme);
 
 function App() {

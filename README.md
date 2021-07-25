@@ -45,7 +45,8 @@ SRC -- app (hooks, store, utils)<br>
 
 # Deploy
        
-Lo he realizado en un peqeño VPS que tengo en Ionos. La URL es  [https://manuelgc.eu/nuwe2101](https://manuelgc.eu/nuwe2101)
+Lo he realizado en un peqeño VPS que tengo en Ionos. La URL es  [http://manuelgc.eu/nuwe2101](http://manuelgc.eu/nuwe2101)
+Utilizo un pequeño servidor json-server para la persistencia de los datos que solo funciona con http, por eso hay que acceder a la aplicación con este mismo protocolo inseguro. Si se accede con https aparece el error de Mixed Content al cargar los datos.
 
 # CodeFactor
 

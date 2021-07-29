@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { RootState } from "../../../../app/store";
+import type { AppDispatch, RootState } from "../../../../app/store";
 import { IdName } from "domain/model/IdName";
 import { CompanyTypeService } from "domain/services/CompanyType.service";
 
@@ -17,15 +17,22 @@ const initialState: CompanyTypeState = {
     currentRequestId: ""
 };
 
-export const fetchCompanyTypes = createAsyncThunk('companyType/fetchCompanyTypes', async () => {
-    const response = await CompanyTypeService.get()
+export const fetchCompanyTypes = createAsyncThunk<
+    IdName[], void, {dispatch: AppDispatch}
+>('companyType/fetchCompanyTypes', async (parms, ThunkAPI) => {
+    ThunkAPI.dispatch(companyTypeSlice.actions.resetStatus);
+    const response = await CompanyTypeService.get();
     return response
-})
+});
 
 export const companyTypeSlice = createSlice({
     name: "companyType",
     initialState,
     reducers: {
+        resetStatus: (state) => {
+            if (state.status !== "loading")
+                state.status = "idle";
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -50,5 +57,6 @@ export const companyTypeSlice = createSlice({
     },
 });
 
+export const { resetStatus } = companyTypeSlice.actions;
 export const selectCompanyTypes = (state: RootState) => state.companyType.value;
 export default companyTypeSlice.reducer;

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { AppDispatch, RootState, store } from "../../../../app/store";
+import { AppDispatch, RootState } from "../../../../app/store";
 import { PersonalProfile } from "domain/model/PersonalProfile";
 import { PersonalProfileService } from "domain/services/PersonalProfile.service";
 
@@ -17,15 +17,19 @@ const initialState: PersonalProfileState = {
     currentRequestId: ""
 };
 
-export const fetchPersonalProfile = createAsyncThunk('personalProfile/fetchProfile', async (params, ThunkAPI) => {
+export const fetchPersonalProfile = createAsyncThunk<
+    PersonalProfile, void, {dispatch: AppDispatch}
+>('personalProfile/fetchProfile', async (parms, ThunkAPI) => {
     ThunkAPI.dispatch(personalProfileSlice.actions.resetStatus);
     const response = await PersonalProfileService.get();
     return response
-})
+});
 
-export const putPersonalProfile = createAsyncThunk('personalProfile/putPersonalProfile', async (newData: Partial<PersonalProfile>, ThunkAPI) => {
+export const putPersonalProfile = createAsyncThunk<
+    PersonalProfile, Partial<PersonalProfile>, {dispatch: AppDispatch, state: RootState}
+>('personalProfile/putPersonalProfile', async (newData, ThunkAPI) => {
     ThunkAPI.dispatch(personalProfileSlice.actions.resetStatus);
-    const state = selectPersonalProfile(store.getState()) as PersonalProfile;
+    const state = ThunkAPI.getState().personalProfile.value as PersonalProfile;
     const response = await PersonalProfileService.put({...state, ...newData});
     return response
 })

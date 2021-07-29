@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { RootState } from "../../../../app/store";
+import type { AppDispatch, RootState } from "../../../../app/store";
 import { NuweProfile } from "domain/model/NuweProfile";
 import { NuweProfileService } from "domain/services/NuweProfile.service";
 
@@ -17,15 +17,22 @@ const initialState: NuweProfileState = {
     currentRequestId: ""
 };
 
-export const fetchNuweProfile = createAsyncThunk('nuweProfile/fetchNuweProfile', async () => {
-    const response = await NuweProfileService.get()
+export const fetchNuweProfile = createAsyncThunk<
+    NuweProfile, void, {dispatch: AppDispatch}
+>('nuweProfile/fetchNuweProfile', async (parms, ThunkAPI) => {
+    ThunkAPI.dispatch(nuweProfileSlice.actions.resetStatus);
+    const response = await NuweProfileService.get();
     return response
-})
+});
 
 export const nuweProfileSlice = createSlice({
     name: "nuweProfile",
     initialState,
     reducers: {
+        resetStatus: (state) => {
+            if (state.status !== "loading")
+                state.status = "idle";
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -50,5 +57,6 @@ export const nuweProfileSlice = createSlice({
     },
 });
 
+export const { resetStatus } = nuweProfileSlice.actions;
 export const selectNuweProfile = (state: RootState) => state.nuweProfile.value;
 export default nuweProfileSlice.reducer;

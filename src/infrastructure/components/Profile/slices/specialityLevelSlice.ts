@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { RootState } from "../../../../app/store";
+import type { AppDispatch, RootState } from "../../../../app/store";
 import { IdName } from "domain/model/IdName";
 import { SpecialityLevelService } from "domain/services/SpecialityLevel.service";
 
@@ -17,15 +17,22 @@ const initialState: SpecialityLevelState = {
     currentRequestId: ""
 };
 
-export const fetchSpecialityLevels = createAsyncThunk('specialityLevel/fetchSpecialityLevels', async () => {
-    const response = await SpecialityLevelService.get()
+export const fetchSpecialityLevels = createAsyncThunk<
+    IdName[], void, {dispatch: AppDispatch}
+>('specialityLevel/fetchSpecialityLevels', async (parms, ThunkAPI) => {
+    ThunkAPI.dispatch(specialityLevelSlice.actions.resetStatus);
+    const response = await SpecialityLevelService.get();
     return response
-})
+});
 
 export const specialityLevelSlice = createSlice({
     name: "specialityLevel",
     initialState,
     reducers: {
+        resetStatus: (state) => {
+            if (state.status !== "loading")
+                state.status = "idle";
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -50,5 +57,6 @@ export const specialityLevelSlice = createSlice({
     },
 });
 
+export const { resetStatus } = specialityLevelSlice.actions;
 export const selectSpecialityLevels = (state: RootState) => state.specialityLevel.value;
 export default specialityLevelSlice.reducer;

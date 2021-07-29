@@ -4,5 +4,5 @@ import PersonalProfileRepository from "infrastructure/repositories/personalProfi
 export const PersonalProfileService = {
     get: async (): Promise<PersonalProfile> => PersonalProfileRepository.get(),
     put: async (data: PersonalProfile): Promise<PersonalProfile> => 
-        {console.log("DDD", data); return PersonalProfileRepository.put(data)}
+        {console.log("SERVICE", data); return PersonalProfileRepository.put(data)}
 };

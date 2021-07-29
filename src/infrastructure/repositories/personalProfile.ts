@@ -28,6 +28,7 @@ const PersonalProfileRepository = {
     put: async (data: PersonalProfile) => {
         // Here we can adapt the domain model to the DTO.
         // In this case, they are identical
+console.log("REPO", data)        
         const res = await PersonalProfileAdapter.put<PersonalProfileDTO>(
             "personal_profiles/" + user, data as PersonalProfileDTO
         );

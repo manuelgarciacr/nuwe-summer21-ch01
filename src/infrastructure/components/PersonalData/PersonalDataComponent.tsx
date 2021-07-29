@@ -12,8 +12,20 @@ import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
+
+const buttonStyles = makeStyles((theme) => ({
+    button: {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+        transition: "transform 300ms",
+        "&:hover": {
+            transform: "translate(0,-15%)!important",
+            backgroundColor: theme.palette.warning.light
+        },       
+    }
+}));
 
 interface IProps {
     profile: PersonalProfile, 
@@ -54,6 +66,7 @@ const PersonalData = (props: IProps) => {
     const theme = useTheme();
     const { profile, specialities, specialityLevels, handleSave } = props;
     const classes = useStyles(theme);
+    const buttonClasses = buttonStyles();
     const [values, setValues] = useState<{[k: string]: any}>(profile);
     const handleChange = (id: string, value: any) => {
         setValues(v => ({...v, [id]: value}));
@@ -85,6 +98,8 @@ const PersonalData = (props: IProps) => {
             <form className={classes.form}>
 
                 <TextField label="Avatar" onChange={ev => handleChange("avatar", ev)} variant="outlined" placeholder="http://" value={values["avatar"]} />
+                <TextField label="Avatar Torso" onChange={ev => handleChange("avatarMedium", ev)} variant="outlined" placeholder="http://" value={values["avatarMedium"]} />
+                <TextField label="Avatar Entero" onChange={ev => handleChange("avatarFull", ev)} variant="outlined" placeholder="http://" value={values["avatarFull"]} />
                 <div className={classes.inlineControls}>
                     <RenderInput id="email" label="Email" value={values["email"]} hc={handleChange} />
                     <RenderInput id="tel" label="Teléfono" value={values["tel"]} hc={handleChange} />
@@ -112,7 +127,7 @@ const PersonalData = (props: IProps) => {
                 <RenderInput id="website" label="https://" value={values["website"]} hc={handleChange} />
                 <Button onClick={() => handleSave(values)} 
                     // style={{color: theme.palette.primary.contrastText}}
-                    className={classes.button}>GUARDAR</Button>
+                    className={buttonClasses.button}>GUARDAR</Button>
             </form >
         </Paper>
     )

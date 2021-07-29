@@ -28,6 +28,7 @@ import { HomeIcon, WorkIcon, ProfileIcon, ContactIcon } from '../Icons/Icons';
 
 const Another = React.lazy(() => import('../Another/AnotherComponent'));
 const Profile = React.lazy(() => import('../Profile/ProfileComponent'));
+const Nft = React.lazy(() => import('../NftAvatar/NftAvatarComponent'));
 
 const Main = (props: any) => {
     // const { window } = props;
@@ -35,7 +36,6 @@ const Main = (props: any) => {
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const notMobile = useMediaQuery(theme.breakpoints.up('sm'));
-
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
@@ -77,8 +77,6 @@ const Main = (props: any) => {
             <Divider />
         </div>
     );
-
-    // const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
         <Router>
@@ -153,11 +151,28 @@ const Main = (props: any) => {
                             <Route exact path="/nuwe2101">
                                 <Redirect to="/panel" />
                             </Route>
+                            <Route exact path="/panel">
+                                <Redirect to="/other/panel" />
+                            </Route>
+                            <Route exact path="/enterprises">
+                                <Redirect to="/other/enterprises" />
+                            </Route>
                             <Route exact path="/profile">
                                 <Profile />
                             </Route>
-                            <Route path="/:id">
+                            <Route exact path="contact">
+                                <Redirect to="/other/contact" />
+                            </Route>
+                            {/* <Route path="/:id">
                                 <Another />
+                            </Route> */}
+                            <Route path="/other/:id">
+                                <Another />
+                            </Route>
+                            <Route exact path="/charactercreator">
+                                {/* <Redirect to="/charactercreator/index.html" /> */}
+                                {/* <Another /> */}
+                                <Nft />
                             </Route>
                         </Switch>
                     </React.Suspense>

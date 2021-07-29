@@ -33,15 +33,6 @@ const useStyles = makeStyles((theme: Theme) =>
                 flexDirection: "row"
             }        
         },
-        button: {
-            backgroundColor: theme.palette.primary.main,
-            color: theme.palette.primary.contrastText,
-            transition: "transform 300ms",
-            "&:hover": {
-                transform: "translate(0,-15%)!important",
-                backgroundColor: theme.palette.warning.light
-            },       
-        }
 
     })
 );

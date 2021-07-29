@@ -1,4 +1,5 @@
 import React from "react";
+import { Link as RouterLink, LinkProps as RouterLinkProps, useHistory } from 'react-router-dom';
 
 import { LocationIcon, GithubIcon, LinkedInIcon, GitlabIcon, BehanceIcon } from "../Icons/Icons";
 import useStyles from "./styles";
@@ -19,7 +20,7 @@ import LanguageIcon from '@material-ui/icons/Language';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import InsertChartOutlinedIcon from '@material-ui/icons/InsertChartOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import { useTheme } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
@@ -27,6 +28,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import Hidden from "@material-ui/core/Hidden";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
 
 // Redux
 import { useAppSelector, useAppDispatch } from 'app/hooks'
@@ -42,10 +44,31 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Link from "@material-ui/core/Link";
 import Photo from "../Photo/PhotoComponent";
 
+const buttonStyles = makeStyles((theme) => ({
+    nftButton: {
+        position: "absolute",
+        top: 0,
+        left: 5,
+        transition: "transform 300ms",
+        fontWeight: "bolder",
+        borderWidth: 3,
+        "&:hover": {
+            transform: "translate(0,-15%)",
+        },
+    }
+}));
+  
 const Profile = () => {
     const theme = useTheme();
-    const classes = useStyles();
+    const classes = useStyles(); // new Map(...useStyles());
+    const buttonClasses = buttonStyles();
     const [open, setOpen] = React.useState<string | null>(null);
+    const history = useHistory();
+       
+    const handleAvatar = () => {
+        history.push("/charactercreator");
+    };
+
     const getName = (id: number, arr: IdName[]) =>
         arr.find(v => v.id === id)?.name || "";
     
@@ -80,6 +103,12 @@ const Profile = () => {
         //     dispatch(putPersonalProfile({...personalProfile, stack: values}));
         handleClose();
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // const LinkBehavior = React.forwardRef<any, Omit<RouterLinkProps, 'to'>>((props, ref) => (
+    //     <RouterLink ref={ref} to="/charactercreator" {...props} />
+    // ));
+
     ///////////////////////////////////////////////////////////
     // Redux
     //
@@ -99,7 +128,6 @@ const Profile = () => {
     
     const personalProfileError = useAppSelector(state => state.personalProfile.error)
     const nuweProfileError = useAppSelector(state => state.nuweProfile.error)
-
 
     const [isReady, setReady] = React.useState(false);
     
@@ -132,10 +160,11 @@ const Profile = () => {
     const failed = personalProfileStatus === "failed"
         || nuweProfileStatus === "failed";
         // Even if specialities, speciality levels or company types failed the app continues
+    
     if (loading)
         return (<div className={classes.loadingError}>
                 <CircularProgress />
-                <Typography variant="h4">Loading...</Typography>
+                <Typography variant="h4">Cargando...</Typography>
             </div>)
     else if (failed)
         return(<div className={classes.loadingError}>{personalProfileError}{nuweProfileError}</div>)
@@ -144,7 +173,7 @@ const Profile = () => {
     // Redux
     //
     ///////////////////////////////////////////////////////////
-
+    const imageAux = personalProfile.headerImage || "https://nuwe.io/banner_default.png";
     return (
         <>
             <Card className={classes.generalCard}>
@@ -156,7 +185,7 @@ const Profile = () => {
                 </div>
                 <CardMedia
                     className={classes.generalCardMedia}
-                    image={personalProfile.headerImage}
+                    image={imageAux}
                     title="Imagen de fondo"
                 />
                 {/*
@@ -166,7 +195,13 @@ const Profile = () => {
                     <Avatar className={classes.generalCardAvatar}
                         alt="Avatar del usuario"
                         style={{width: theme.spacing(21), height: theme.spacing(21)}} // CSS problem. Size lost after first render
-                        src={personalProfile.avatar} />
+                        src={personalProfile.avatar} 
+                        onDoubleClick={handleAvatar}/>
+                    
+                    <Button className={buttonClasses.nftButton} color="primary" component={RouterLink} to="/charactercreator" variant="outlined">
+                        VER NUWE NFT
+                    </Button>
+                    
                     <div  className={classes.editIcon} onClick={() => handleOpen("Datos Personales")}>
                         <EditOutlinedIcon />
                     </div>
@@ -197,7 +232,7 @@ const Profile = () => {
                         }
                         {personalProfile.behance &&
                             <Link className={classes.animation} href={personalProfile.behance} target="_blank" >
-                                <BehanceIcon className={["icon", "large"]} viewBox="0 0 64 64" />
+                                <BehanceIcon className={"icon long"} viewBox="0 0 64 64" />
                             </Link>
                         }
                         <div className="iconned">
@@ -225,7 +260,7 @@ const Profile = () => {
                             <Typography className="caption" variant="h6">Stack indicado por el usuario</Typography>
                         </Hidden>
                         <Paper className="container">
-                            {personalProfile.stack.map((value, i) => (
+                            {personalProfile.stack && personalProfile.stack.map((value, i) => (
                                 <StackItem name={value} key={i}/>
                             ))}
                         </Paper>

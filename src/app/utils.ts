@@ -1,16 +1,18 @@
 export const getPeriod = (from: Date | string, to: Date | string) => {
     let f: Date, t: Date;
     let res: string;
-
     if (typeof from === "string") 
         f = new Date(from);
-    else 
+    else if (from instanceof Date)
         f = from;
+    else
+        f = new Date();
     if (typeof to === "string") 
         t = new Date(to);
-    else 
+    else if (to instanceof Date)
         t = to;
-
+    else
+        t = new Date();
     const time = f.getTime() - t.getTime();
 
     if (Math.abs(time) <= 60 * 1000) 

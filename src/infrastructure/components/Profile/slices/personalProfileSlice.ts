@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RootState, store } from "../../../../app/store";
+import { AppDispatch, RootState, store } from "../../../../app/store";
 import { PersonalProfile } from "domain/model/PersonalProfile";
 import { PersonalProfileService } from "domain/services/PersonalProfile.service";
 
@@ -17,14 +17,16 @@ const initialState: PersonalProfileState = {
     currentRequestId: ""
 };
 
-export const fetchPersonalProfile = createAsyncThunk('personalProfile/fetchProfile', async () => {
-    const response = await PersonalProfileService.get()
+export const fetchPersonalProfile = createAsyncThunk('personalProfile/fetchProfile', async (params, ThunkAPI) => {
+    ThunkAPI.dispatch(personalProfileSlice.actions.resetStatus);
+    const response = await PersonalProfileService.get();
     return response
 })
 
-export const putPersonalProfile = createAsyncThunk('personalProfile/putPersonalProfile', async (newData: Partial<PersonalProfile>) => {
+export const putPersonalProfile = createAsyncThunk('personalProfile/putPersonalProfile', async (newData: Partial<PersonalProfile>, ThunkAPI) => {
+    ThunkAPI.dispatch(personalProfileSlice.actions.resetStatus);
     const state = selectPersonalProfile(store.getState()) as PersonalProfile;
-    const response = await PersonalProfileService.put({...state, ...newData})
+    const response = await PersonalProfileService.put({...state, ...newData});
     return response
 })
   
@@ -33,6 +35,10 @@ export const personalProfileSlice = createSlice({
     // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
+        resetStatus: (state) => {
+            if (state.status !== "loading")
+                state.status = "idle";
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -75,5 +81,6 @@ export const personalProfileSlice = createSlice({
     },
 });
 
+export const { resetStatus } = personalProfileSlice.actions;
 export const selectPersonalProfile = (state: RootState) => state.personalProfile.value;
 export default personalProfileSlice.reducer;

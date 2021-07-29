@@ -8,6 +8,8 @@ export type PersonalProfile = {
     headerImage: string;
     //
     avatar: string;
+    avatarMedium: string;
+    avatarFull: string;
     speciality: number;
     specialityLevel: number;
     biography: string;

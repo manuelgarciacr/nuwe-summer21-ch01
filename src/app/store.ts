@@ -11,7 +11,7 @@ export const store = configureStore({
         nuweProfile: nuweProfileReducer,
         speciality: specialityReducer,
         specialityLevel: specialityLevelReducer,
-        companyType: companyTypeReducer
+        companyType: companyTypeReducer,
     },
 })
 

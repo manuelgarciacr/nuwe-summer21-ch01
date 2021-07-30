@@ -45,6 +45,9 @@ let theme = createTheme({
             //fontSize: 20,
             fontWeight: '300'
         },
+        body1: {
+            fontSize: 12
+        }
     }
 });
 

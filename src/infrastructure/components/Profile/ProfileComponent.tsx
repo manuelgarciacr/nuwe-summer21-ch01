@@ -198,7 +198,7 @@ const Profile = () => {
                         src={personalProfile.avatar} 
                         onDoubleClick={handleAvatar}/>
                     
-                    <Button className={buttonClasses.nftButton} color="primary" component={RouterLink} to="/charactercreator" variant="outlined">
+                    <Button className={buttonClasses.nftButton} color="primary" component={RouterLink} to="/nftcards" variant="outlined">
                         VER NUWE NFT
                     </Button>
                     

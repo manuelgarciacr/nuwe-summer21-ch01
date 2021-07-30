@@ -28,7 +28,8 @@ import { HomeIcon, WorkIcon, ProfileIcon, ContactIcon } from '../Icons/Icons';
 
 const Another = React.lazy(() => import('../Another/AnotherComponent'));
 const Profile = React.lazy(() => import('../Profile/ProfileComponent'));
-const Nft = React.lazy(() => import('../NftAvatar/NftAvatarComponent'));
+const NftAvatar = React.lazy(() => import('../NftAvatar/NftAvatarComponent'));
+const NftCards = React.lazy(() => import('../NftCards/NftCardsComponent'));
 
 const Main = (props: any) => {
     // const { window } = props;
@@ -172,7 +173,12 @@ const Main = (props: any) => {
                             <Route exact path="/charactercreator">
                                 {/* <Redirect to="/charactercreator/index.html" /> */}
                                 {/* <Another /> */}
-                                <Nft />
+                                <NftAvatar />
+                            </Route>
+                            <Route exact path="/nftcards">
+                                {/* <Redirect to="/charactercreator/index.html" /> */}
+                                {/* <Another /> */}
+                                <NftCards />
                             </Route>
                         </Switch>
                     </React.Suspense>

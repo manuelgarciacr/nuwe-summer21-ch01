@@ -7,5 +7,15 @@ export type NuweProfile = {
     softSkills: SoftSkill[],
     rankingPosition: number,
     totalUsers: number
+    //
+    position: number,
+    rango: string,
+    europe: number,
+    hackathons: number,
+    challenges: number,
+    projectsOS: number,
+    pins: number,
+    country: string,
+    continent: string
 }
 

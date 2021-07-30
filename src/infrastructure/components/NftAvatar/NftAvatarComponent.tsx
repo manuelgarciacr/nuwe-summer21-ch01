@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import { putPersonalProfile, resetStatus } from "../Profile/slices/personalProfileSlice";
 import useStyles from "./styles";
 
-import { useTheme } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 //import useStyles from "./styles";

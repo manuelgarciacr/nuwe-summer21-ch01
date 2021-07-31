@@ -38,7 +38,7 @@ const NUWE_PROFILE: PersonalProfileDTO = {
     position: 1,
     country: "España",
     europe: 157,
-    global: 2445,
+    global: 1245,
     hackathons: 12,
     challenges: 56,
     projectsOS: 3,

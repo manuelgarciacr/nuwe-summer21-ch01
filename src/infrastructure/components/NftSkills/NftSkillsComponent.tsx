@@ -2,13 +2,11 @@ import useStyles from "./styles";
 import useStylesItem from "./stylesItem";
 import HardSkill from "domain/model/HardSkill";
 import SoftSkill from "domain/model/SoftSkill";
-// import { useWindowDimensions } from "app/hooks";
 import ReactApexChart from "react-apexcharts";
 
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-// import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Tooltip from "@material-ui/core/Tooltip";
 import Divider from "@material-ui/core/Divider";
@@ -57,11 +55,8 @@ interface IProps {
 }
 
 const NftSkills = (props: IProps) => {
-    //const theme = useTheme();
     const classes = useStyles();
     const { hard, soft } = props;
-    // const {width } = useWindowDimensions();
-    // const notMobile = useMediaQuery(theme.breakpoints.up('sm'));
     const calcPentagon = (n: number, r: number) => {
         const penta: [x: number, y: number][] = [];
         for (let i = 0; i < n; i++) {
@@ -91,18 +86,9 @@ const NftSkills = (props: IProps) => {
         }
     });
     const lengthMax =newArr.length;
-    // const offsetX = (width - (notMobile ? 290 : 0)) / 2 - 50;
     const offsetX = 150; 
-    // const radio = offsetX > 250 ? 250 : offsetX
     const radio = 160;
     const penta = calcPentagon(lengthMax, radio/1.35);
-    // const offsetY = 70;
-    const offsetY = 0;
-    const height = lengthMax === 0
-        ? 0
-        : lengthMax > 2 
-        ? 3 * radio + 120 // 3, 4 or 5
-        : 2 * radio + 120 // 1 or 2
     const type: 'radar' = 'radar';
     const data = {
         series: [{

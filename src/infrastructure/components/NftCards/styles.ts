@@ -4,20 +4,25 @@ const useStyles = makeStyles((theme) =>
         ({
             root: {
                 display: "flex",
-                jutifyContent: "center"
+                jutifyContent: "center",
+                overflowX: "hidden",
+                width: "100vw"
             },
             container: {
                 display: "flex",
-                flex: 1,
-                paddingTop: 20,
-                [theme.breakpoints.down("sm")]: {
-                    width: "100%",
-                    height: "calc(100vh - 50px)"
-                },
+                flexShrink: 0,
+                flexGrow: 0,
+                justifyContent: "space-evenly",
+                width: "100%",
+                transform: "scaleY(90%)",
+                marginTop: "-2rem",
                 [theme.breakpoints.up("sm")]: {
                     width: "calc(100vw - 300px)",
-                    height: "calc(100vh - 64px - 48px)"
-                }
+                    height: "calc(100vh - 64px - 48px)",
+                    justifyContent: "space-between",
+                    transform: "scale(70%)",
+                    alignItems: "center"
+                },
             },
             loadingError: {
                 display: "flex",
@@ -26,13 +31,55 @@ const useStyles = makeStyles((theme) =>
                 justifyContent: "center",
                 minHeight: 400,
             },
-    
+            miniCard: {
+                width: "150px",
+                height: "210px",
+            	borderRadius: "6px",
+                backgroundColor: "#023502",
+                borderWidth: ".5em",
+                borderColor: theme.palette.primary.main,
+                borderStyle: "solid",
+                color: "white",
+                padding: 5,
+                flexShrink: 0,
+                flexGrow: 0,
+                position: "relative",
+                "& .avatar": {
+                    bottom: 0,
+                    height: "80%",
+                    width: "65%",
+                    transform: "scale(0.95)",
+                    left: 0
+                },
+                "& $emblemaFront": {
+                    marginTop: "4.5em",
+                    marginLeft: "3.5em"
+                },
+                "& .footer": {
+                    flex: 1, 
+                    width: "50%", 
+                    justifyContent: "flex-end",
+                    position: "absolute",
+                    bottom: 0,
+                    right: 5,
+                    height: 50,
+                    color: theme.palette.primary.light,
+                    "& .position": {
+                        fontWeight: "bolder",
+                        display: "flex",
+                        "justifyContent": "flex-end"
+                    }
+                }
+            }, 
             card: {
                 width: "350px",
                 height: "620px",
-                margin: "1em",
                 perspective: "1500px",
                 overflow: "visible",
+                flexShrink: 0,
+                flexGrow: 0,
+                margin: 0,
+                marginTop: "20px",
                 "& $content": {
                     position: "relative",
                     width: "100%",
@@ -42,11 +89,6 @@ const useStyles = makeStyles((theme) =>
                     "&.shown": {
                         transform: "rotateY(180deg)"
                     }
-                },
-                [theme.breakpoints.down("sm")]: {
-                    width: "100%",
-                    height: "calc(100vh - 55px)",
-                    margin: 0
                 },
             },
             content: {},
@@ -66,18 +108,6 @@ const useStyles = makeStyles((theme) =>
                 borderWidth: ".5em",
                 borderColor: theme.palette.primary.main,
                 borderStyle: "solid",
-                // "&:after": {
-                //     content: '',
-                //     position: "absolute",
-                //     top: 0,
-                //     left: 0,
-                //     width: "100%",
-                //     height: "100%",
-                //     display: "block",
-                //     borderRadius: "6px",
-                //     backfaceVisibility: "hidden",
-                //     background: "linear-gradient(40deg, rgba(67, 138, 243, 0.7), rgba(255, 242, 166, 0.7))"
-                // },
                 "& $inner": {
                     color: "white",
                     fontSize: 8,
@@ -86,26 +116,6 @@ const useStyles = makeStyles((theme) =>
             		padding: ".5em",
             		transform: "translateZ(80px) scale(0.94)"
                 },
-            
-                // "&$h2": {
-                //     gridRow: 2,
-                //     marginBottom: "0.3em",
-                //     textTransform: "uppercase",
-                //     letterSpacing: "3px",
-                //     color: "#fff",
-                //     fontWeight: 500,
-                //     textShadow: "0 0 6px rgba(0, 0, 0, 0.1)"
-                // },
-                // "&$rating": {
-                //     // grid-row: 3;
-                //     // color: rgba(255, 255, 255, 0.8);
-                //     // font-size: 14px;
-                //     // display: flex;
-                //     // flex-flow: row nowrap;
-                //     // i {
-                //     //     margin: 0 1px;
-                //     // }
-                // }
             },
             inner: {},
             back: {
@@ -122,23 +132,10 @@ const useStyles = makeStyles((theme) =>
                 borderStyle: "solid",
                 transform: "rotateY(180deg)",
                 padding: "2em",
-                //overflowY: "hidden",
                 position: "absolute",
 
                 backgroundSize: "cover",
                 backgroundPosition: "center center",
-                // "&:after": {
-                //     content: '',
-                //     position: "absolute",
-                //     top: 0,
-                //     left: 0,
-                //     width: "100%",
-                //     height: "100%",
-                //     display: "block",
-                //     borderRadius: "6px",
-                //     backfaceVisibility: "hidden",
-                //     background: "linear-gradient(40deg, rgba(67, 138, 243, 0.7), rgba(255, 242, 166, 0.7))"
-                // },
             	"& $inner": {
                     color: "white",
                     fontSize: 8,
@@ -147,9 +144,6 @@ const useStyles = makeStyles((theme) =>
             		padding: ".5em",
             		transform: "translateZ(80px) scale(0.94)",
                     position: "relative"
-                    // height: "100%",
-            		// padding: "1.5em",
-                    // transform: "translateZ(80px) scale(0.94)"
             	}
             },
             avatarFront: {
@@ -157,7 +151,6 @@ const useStyles = makeStyles((theme) =>
                 height: "120px!important",
                 marginLeft: "-1.5em",
                 marginTop: "-.75em",
-                // border: "2px solid black",
                 position: "absolute",
                 transform: "translateZ(40px) scale(0.94)"
             },
@@ -169,7 +162,6 @@ const useStyles = makeStyles((theme) =>
                 position: "absolute",
                 transform: "translateZ(80px) scale(0.94)"
             },
-            
             avatarBack: {
                 height: "100%!important",
                 border: "2px solid transparent",
@@ -184,7 +176,7 @@ const useStyles = makeStyles((theme) =>
                 width: "50px!important",
                 height: "50px!important",
                 marginLeft: "5em",
-                marginTop: "12.50em",
+                marginTop: "14em",
                 position: "absolute",
                 transform: "translateZ(80px) scale(0.94)",
                 "&.emblema01": {
@@ -235,8 +227,7 @@ const useStyles = makeStyles((theme) =>
                 lineHeight: "120px",
                 fontWeight: "bolder",
                 "&.centenas": {
-                    fontSize: 90,
-                    //lineHeight: "100px"
+                    fontSize: 90
                 }
             }
         })

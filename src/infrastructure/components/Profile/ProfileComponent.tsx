@@ -1,5 +1,5 @@
 import React from "react";
-import { Link as RouterLink, LinkProps as RouterLinkProps, useHistory } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 
 import { LocationIcon, GithubIcon, LinkedInIcon, GitlabIcon, BehanceIcon } from "../Icons/Icons";
 import useStyles from "./styles";
@@ -43,22 +43,27 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Link from "@material-ui/core/Link";
 import Photo from "../Photo/PhotoComponent";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 
 const buttonStyles = makeStyles((theme) => ({
     nftButton: {
         position: "absolute",
         top: 0,
-        left: 5,
+        left: 0,
+        marginLeft: -20,
         transition: "transform 300ms",
         fontWeight: "bolder",
         borderWidth: 3,
+        [theme.breakpoints.down("sm")]: {
+            marginLeft: 0
+        },
         "&:hover": {
             transform: "translate(0,-15%)",
         },
     }
 }));
   
-const Profile = () => {
+const Profile = (props: any) => {
     const theme = useTheme();
     const classes = useStyles(); // new Map(...useStyles());
     const buttonClasses = buttonStyles();
@@ -199,7 +204,7 @@ const Profile = () => {
                         onDoubleClick={handleAvatar}/>
                     
                     <Button className={buttonClasses.nftButton} color="primary" component={RouterLink} to="/nftcards" variant="outlined">
-                        VER NUWE NFT
+                        {isWidthDown('sm', props.width) ? "VER NFT" : "VER NUWE NFT"}
                     </Button>
                     
                     <div  className={classes.editIcon} onClick={() => handleOpen("Datos Personales")}>
@@ -370,4 +375,4 @@ const Profile = () => {
     )
 }
 
-export default Profile;
+export default withWidth()(Profile);

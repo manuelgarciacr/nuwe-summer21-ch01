@@ -1,6 +1,6 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
-const drawerWidth = 240;
+const drawerWidth = 240; //240;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) =>
         content: {
             flexGrow: 1,
             [theme.breakpoints.up("sm")]: {
-                padding: theme.spacing(3),
+                //padding: theme.spacing(3),
             },
         },
         animation: {

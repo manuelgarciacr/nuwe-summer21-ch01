@@ -6,7 +6,7 @@ import { ISpecialityLevel } from "infrastructure/repositories/specialityLevel";
 
 let BASE_URL: string;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    BASE_URL="http://localhost:3001/";
+    BASE_URL="http://192.168.1.240:3001/";
 } else {
     BASE_URL="http://manuelgc.eu:3001/";
 }

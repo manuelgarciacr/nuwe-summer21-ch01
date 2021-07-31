@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) =>
             display: "flex",
             padding: 0,
             
-        }, 
+        },
         pentagon: {
             width: "250px",
             height: "250px",

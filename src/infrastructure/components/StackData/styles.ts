@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
             "&:hover": {
                 transform: "translate(0,-15%)",
                 backgroundColor: theme.palette.warning.main
-            },       
+            },
         },
     })
 );

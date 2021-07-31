@@ -31,7 +31,7 @@ const Skills = (props: IProps) => {
             penta.push([x, y]);
         }
         return penta;
-    }   
+    }
 
 
     const offsetX = (width - (notMobile ? 290 : 0)) / 2 - 50;
@@ -40,7 +40,7 @@ const Skills = (props: IProps) => {
     const offsetY = 70;
     const height = skills.length === 0
         ? 0
-        : skills.length > 2 
+        : skills.length > 2
         ? 3 * radio + 120 // 3, 4 or 5
         : 2 * radio + 120 // 1 or 2
    
@@ -56,7 +56,7 @@ const Skills = (props: IProps) => {
                     style={{
                         width: radio,
                         transform: `translate(
-                            ${offsetX - (radio / 2) + 50}px, 
+                            ${offsetX - (radio / 2) + 50}px,
                             ${offsetY + radio - 90}px
                         )`
                     }}>
@@ -81,7 +81,7 @@ const Skills = (props: IProps) => {
                                 points={value.points}
                                 topPct={(value as HardSkill).topPct}
                                 x={offsetX + penta[i][0]}
-                                y={offsetY + y} 
+                                y={offsetY + y}
                             />
                          );
                      else
@@ -114,7 +114,7 @@ const Skills = (props: IProps) => {
                                 name={value.name}
                                 idx={i}
                                 points={value.points}
-                                topPoints={(value as SoftSkill).topPoints} 
+                                topPoints={(value as SoftSkill).topPoints}
                             />
                         )
                     })}

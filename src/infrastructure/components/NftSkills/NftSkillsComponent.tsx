@@ -65,12 +65,12 @@ const NftSkills = (props: IProps) => {
             penta.push([x, y]);
         }
         return penta;
-    }   
+    }
 
     const newArr: {h?: HardSkill, s?: SoftSkill}[] = [];
     const dataH: number[] = [];
     const dataS: number[] = [];
-    hard.forEach((v, i) => { 
+    hard.forEach((v, i) => {
         newArr.push({h: v});
         dataH.push(v.points);
         dataS.push(0);
@@ -86,7 +86,7 @@ const NftSkills = (props: IProps) => {
         }
     });
     const lengthMax =newArr.length;
-    const offsetX = 150; 
+    const offsetX = 150;
     const radio = 160;
     const penta = calcPentagon(lengthMax, radio/1.35);
     const type: 'radar' = 'radar';
@@ -156,11 +156,11 @@ console.log("DADA", hard, soft, dataH, dataS)
                 <ReactApexChart style={{
                         width: radio ,
                         // transform: `translate(
-                        //     ${offsetX - (radio / 2)}px, 
+                        //     ${offsetX - (radio / 2)}px,
                         //     ${offsetY + radio - 90}px
                         // )`
                         transform: `translate(
-                            ${offsetX - (radio / 2) - 5}px, 
+                            ${offsetX - (radio / 2) - 5}px,
                             -10px
                         )`,
                         position: "absolute",
@@ -173,7 +173,7 @@ console.log("DADA", hard, soft, dataH, dataS)
                     style={{
                         width: radio,
                         transform: `translate(
-                            ${offsetX - (radio / 2) + 50}px, 
+                            ${offsetX - (radio / 2) + 50}px,
                             ${offsetY + radio - 90}px
                         )`
                     }}>

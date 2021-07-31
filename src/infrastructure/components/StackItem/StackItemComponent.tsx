@@ -25,12 +25,12 @@ const StackItem = (props: { name: string, points?: number, topPct?: number, x?: 
             <GreenTooltip title={name} arrow>
                 <Card className={`${offset[0] !== 1000 ? classes.card : classes.cardEmpty}`} />
             </GreenTooltip>
-            {points && 
+            {points &&
                 <Typography className={classes.message}>{new Intl.NumberFormat().format(points)} pts</Typography>
             }
             {topPct &&
                 <Typography className={classes.message}>Top {new Intl.NumberFormat().format(topPct)}%</Typography>
-            }        
+            }
         </Paper>
     )
 }

@@ -23,12 +23,12 @@ const buttonStyles = makeStyles((theme) => ({
         "&:hover": {
             transform: "translate(0,-15%)!important",
             backgroundColor: theme.palette.warning.light
-        },       
+        }
     }
 }));
 
 interface IProps {
-    profile: PersonalProfile, 
+    profile: PersonalProfile,
     specialities: IdName[],
     specialityLevels: IdName[],
     handleSave: Function
@@ -38,7 +38,7 @@ const RenderInput = (props: {id: string, label: string, value: string, hc: Funct
     const { id, label, value, hc, lines, icon } = props;
     const inputProps: {startAdornment?: JSX.Element} = {};
 
-    if (icon) 
+    if (icon)
         inputProps.startAdornment = (
             <InputAdornment position="start">
                 {icon}
@@ -112,7 +112,7 @@ const PersonalData = (props: IProps) => {
                     <RenderInput id="country" label="País" value={values["country"]} hc={handleChange} />
                     <RenderInput id="city" label="Ciudad" value={values["city"]} hc={handleChange} />
                 </div>
-                <Typography variant="subtitle2">Aquí podrás añadir información personal que creas relevante. 
+                <Typography variant="subtitle2">Aquí podrás añadir información personal que creas relevante.
                     Comentanos quién eres, que cosas te gustan, etc.</Typography>
                 <RenderInput id="biography" label="Biografía" value={values["biography"]} hc={handleChange} lines={4} />
                 <div className={classes.inlineControls}>
@@ -125,7 +125,7 @@ const PersonalData = (props: IProps) => {
                 </div>
                 <Typography variant="subtitle2">URL de tu portfolio personal:</Typography>
                 <RenderInput id="website" label="https://" value={values["website"]} hc={handleChange} />
-                <Button onClick={() => handleSave(values)} 
+                <Button onClick={() => handleSave(values)}
                     // style={{color: theme.palette.primary.contrastText}}
                     className={buttonClasses.button}>GUARDAR</Button>
             </form >

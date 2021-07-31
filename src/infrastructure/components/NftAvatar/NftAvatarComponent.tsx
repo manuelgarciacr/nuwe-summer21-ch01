@@ -84,7 +84,6 @@ const NftAvatar = () => {
             } catch (error) {
                 reject(error);
             }
-
         });
     };
 
@@ -96,8 +95,8 @@ const NftAvatar = () => {
             toPng(ev.data.payload[0], 560, 560)
                 .then(val => { av.push(val); return toPng(ev.data.payload[1], 560, 560) })
                 .then(val => { av.push(val); return toPng(ev.data.payload[2], 560, 560) })
-                .then(val => { 
-                    av.push(val); 
+                .then(val => {
+                    av.push(val);
                     dispatch(putPersonalProfile({avatar: av[2], avatarMedium: av[1], avatarFull: av[0]}));
                 })
                 .then()

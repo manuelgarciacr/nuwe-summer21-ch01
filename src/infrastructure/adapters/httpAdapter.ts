@@ -2,14 +2,14 @@ import { INuweProfile } from "infrastructure/repositories/nuweProfile";
 import { IPersonalProfile, PersonalProfileDTO } from "infrastructure/repositories/personalProfile";
 
 
-const fakeFetch  = async <T>(url: string): Promise<{status: number, data: T}> => new Promise((resolve, reject) => 
+const fakeFetch  = async <T>(url: string): Promise<{status: number, data: T}> => new Promise((resolve, reject) =>
     {setTimeout( () => {
         if (url.startsWith('personal_profiles'))
             resolve({status: 200, data: PERSONAL_PROFILE as T});
         else if (url.startsWith('nuwe_profiles'))
             resolve({status: 200, data: NUWE_PROFILE as T});
         reject({status: 404, data: "Not found"})
-    }, 4000)} ) 
+    }, 4000)} )
 
 const get = async <T>(url: string) => {
     return fakeFetch<T>(url);

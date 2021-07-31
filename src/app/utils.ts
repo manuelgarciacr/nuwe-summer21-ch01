@@ -1,13 +1,13 @@
 export const getPeriod = (from: Date | string, to: Date | string) => {
     let f: Date, t: Date;
     let res: string;
-    if (typeof from === "string") 
+    if (typeof from === "string")
         f = new Date(from);
     else if (from instanceof Date)
         f = from;
     else
         f = new Date();
-    if (typeof to === "string") 
+    if (typeof to === "string")
         t = new Date(to);
     else if (to instanceof Date)
         t = to;
@@ -15,28 +15,28 @@ export const getPeriod = (from: Date | string, to: Date | string) => {
         t = new Date();
     const time = f.getTime() - t.getTime();
 
-    if (Math.abs(time) <= 60 * 1000) 
+    if (Math.abs(time) <= 60 * 1000)
         return "ahora";
     if (time > 0) 
         res = "hace ";
-    else 
+    else
         res = "dentro de ";
 
     const min = Math.round(Math.abs(time) / (60 * 1000));
 
     if (min < 60) {
-        if (min === 1) 
+        if (min === 1)
             return res + "un minuto";
-        else 
+        else
             return res + min + " minutos";
     }
 
     const hor = Math.round(min / 60);
 
     if (hor < 24) {
-        if (hor === 1) 
+        if (hor === 1)
             return res + "una hora";
-        else 
+        else
             return res + hor + " horas";
     }
 
@@ -44,9 +44,9 @@ export const getPeriod = (from: Date | string, to: Date | string) => {
     
     if (dias < 31) {
         if (dias === 1) {
-            if (time > 0) 
+            if (time > 0)
                 return "ayer";
-            else 
+            else
                 return "mañana";
         } else {
             return res + dias + " días";
@@ -56,9 +56,9 @@ export const getPeriod = (from: Date | string, to: Date | string) => {
     const meses = Math.round(dias / 30);
 
     if (meses < 12) {
-        if (meses === 1) 
+        if (meses === 1)
             return res + "un mes";
-        else 
+        else
             return res + hor + " meses";
     }
     

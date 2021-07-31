@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: theme.spacing(60)
         },
         title: {
-            marginLeft: 20, 
+            marginLeft: 20,
             fontWeight: "bolder"
         },
         form: {
@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme: Theme) =>
                 flexDirection: "row"
             }        
         },
-
     })
 );
 

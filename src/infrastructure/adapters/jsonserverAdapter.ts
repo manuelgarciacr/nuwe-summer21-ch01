@@ -10,7 +10,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 } else {
     BASE_URL="http://manuelgc.eu:3001/";
 }
-const get = async <T>(url: string) => 
+const get = async <T>(url: string) =>
     fetch(BASE_URL + url, {
         method: 'GET',
     }).then(res1 => res1.json().then(res => ({status: res1.status, data: res as T})))
@@ -21,10 +21,10 @@ const put = async <T>(url: string, data: T) =>
         body: JSON.stringify(data),
         headers:{
             'Content-Type': 'application/json'
-        }    
+        }
     }).then(res1 => res1.json().then(res => ({status: res1.status, data: res as T})))
 
-interface IHttpAdapter extends IPersonalProfile, INuweProfile, 
+interface IHttpAdapter extends IPersonalProfile, INuweProfile,
     ISpeciality, ISpecialityLevel, ICompanyType {};
 
 const Adapter: IHttpAdapter = {

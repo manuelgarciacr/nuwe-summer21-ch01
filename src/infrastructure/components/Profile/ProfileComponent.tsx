@@ -200,7 +200,7 @@ const Profile = (props: any) => {
                     <Avatar className={classes.generalCardAvatar}
                         alt="Avatar del usuario"
                         style={{width: theme.spacing(21), height: theme.spacing(21)}} // CSS problem. Size lost after first render
-                        src={personalProfile.avatar} 
+                        src={personalProfile.avatar}
                         onDoubleClick={handleAvatar}/>
                     
                     <Button className={buttonClasses.nftButton} color="primary" component={RouterLink} to="/nftcards" variant="outlined">
@@ -225,7 +225,7 @@ const Profile = (props: any) => {
                                 <GithubIcon className="icon" viewBox="0 0 150 150" />
                             </Link>
                         }
-                        {personalProfile.linkedin && 
+                        {personalProfile.linkedin &&
                             <Link className={classes.animation} href={personalProfile.linkedin} target="_blank" >
                                 <LinkedInIcon className="icon" viewBox="0 0 150 150" />
                             </Link>

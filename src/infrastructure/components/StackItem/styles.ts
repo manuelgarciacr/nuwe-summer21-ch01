@@ -32,7 +32,7 @@ const useStyles = (offset: [number, number], x?: number, y?: number) => makeStyl
         },
         absoluteCard: {
             position: "absolute",
-            transform: `translate(${x}px, ${y}px)` 
+            transform: `translate(${x}px, ${y}px)`
         },
         content: {
             marginTop: "100%"
@@ -42,23 +42,5 @@ const useStyles = (offset: [number, number], x?: number, y?: number) => makeStyl
         }
     })
 });
-// const useStyles = (offset: [number, number]) => makeStyles(({palette}: Theme) => {
-//     console.log("PPPP", palette.secondary)
-//         return createStyles({
-//             root: {
-//                 display: "flex",
-//             },
-//             card: {
-//                 width: 100,
-//                 height: 100,
-//                 padding: 0,
-//                 margin: 0,
-//                 backgroundColor: palette.secondary.dark,
-//                 backgroundImage: `url(${Glyphs})`,
-//                 backgroundPositionX: -115 * offset[0],
-//                 backgroundPositionY: -115 * offset[1] 
-//             }
-//         })
-//     });
     
 export default useStyles;

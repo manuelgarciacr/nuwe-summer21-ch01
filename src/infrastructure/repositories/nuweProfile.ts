@@ -1,7 +1,7 @@
 import Adapter from "../adapters/httpAdapter";
 import { NuweProfile } from "domain/model/NuweProfile";
 
-export interface NuweProfileDTO extends NuweProfile {}
+export interface NuweProfileDTO extends NuweProfile {fakeField?: string}
 
 export interface INuweProfile {
     get: <T>(url: string) => Promise<{status: number, data: T}>;

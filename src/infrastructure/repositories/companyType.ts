@@ -1,7 +1,7 @@
 import { IdName } from "domain/model/IdName";
 import Adapter from "../adapters/jsonserverAdapter";
 
-export interface CompanyTypeDTO extends IdName {}
+export interface CompanyTypeDTO extends IdName {fakeField?: string}
 
 export interface ICompanyType {
     get: <T>(url: string) => Promise<{status: number, data: T}>;

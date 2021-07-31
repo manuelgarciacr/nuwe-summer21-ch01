@@ -106,6 +106,8 @@ const NftCards = (props: any) => {
 
     return (
         <div className={classes.container}>
+            
+
             {isWidthUp('sm', props.width) && <Card className={classes.miniCard}>
                 <div>
                     <Avatar style={{ position: "absolute" }} variant="rounded" sizes={"width: 70, width: 100"} className={"avatar"} aria-label="avatar" src={personalProfile.avatarMedium}>
@@ -122,7 +124,7 @@ const NftCards = (props: any) => {
                     </div>
                 </div>
             </Card>}
-            <Card onClick={() => setShown(!isShown)} className={classes.card}>
+            <Card onClick={() => setShown(!isShown)} className={`${classes.card} on`}>
                 <div className={classes.content + ` ${isShown ? "shown" : ""}`}>
 
                     <CardContent className={classes.front}>

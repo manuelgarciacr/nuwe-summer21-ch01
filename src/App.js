@@ -4,6 +4,7 @@ import Main from 'infrastructure/components/Main/MainComponent';
 
 let theme = createTheme({
     palette: {
+        type: "dark",
         primary: {
             light: '#6AB972',
             main: '#569B51',

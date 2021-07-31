@@ -72,7 +72,6 @@ const useStyles = makeStyles((theme: Theme) =>
                 "& .caption": {
                     marginTop: theme.spacing(-2.3),
                     marginLeft: 10,
-                    backgroundColor: "white",
                     width: "fit-content",
                 },
                 "& .container": {

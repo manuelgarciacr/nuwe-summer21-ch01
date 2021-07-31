@@ -1,5 +1,5 @@
-import {  makeStyles, Theme } from "@material-ui/core/styles";
-import { BorderStyle } from "@material-ui/icons";
+import {  makeStyles } from "@material-ui/core/styles";
+
 const useStyles = makeStyles((theme) =>
         ({
             root: {
@@ -157,17 +157,45 @@ const useStyles = makeStyles((theme) =>
                 height: "120px!important",
                 marginLeft: "-1.5em",
                 marginTop: "-.75em",
-                //border: "2px solid black",
+                // border: "2px solid black",
                 position: "absolute",
                 transform: "translateZ(40px) scale(0.94)"
             },
+            emblemaFront: {
+                width: "50px!important",
+                height: "50px!important",
+                marginLeft: "2em",
+                marginTop: "3.5em",
+                position: "absolute",
+                transform: "translateZ(80px) scale(0.94)"
+            },
+            
             avatarBack: {
                 height: "100%!important",
-                marginLeft: "-25%",
                 border: "2px solid transparent",
-                width: "100%!important",
+                width: "160%!important",
                 position: "absolute",
-                transform: "translateZ(40px) scale(0.94)"
+                transform: "translateX(-40%) translateZ(40px) scale(0.94)",
+                "&.hide": {
+                    transform: "translateX(0)"
+                }
+            },
+            emblemaBack: {
+                width: "50px!important",
+                height: "50px!important",
+                marginLeft: "5em",
+                marginTop: "12.50em",
+                position: "absolute",
+                transform: "translateZ(80px) scale(0.94)",
+                "&.emblema01": {
+                    marginLeft: "7.2em"
+                },
+                "&.emblema02": {
+                    marginLeft: "9.4em"
+                },
+                "&.emblema03": {
+                    marginLeft: "11.6em"
+                }            
             },
             qr: {
                 position: "absolute",
@@ -188,6 +216,28 @@ const useStyles = makeStyles((theme) =>
             rootAvatar: {
                 width: "auto",
                 height: "auto"
+            },
+            footer: {
+                position: "absolute", 
+                bottom: 0, 
+                color: "white",
+                display: "flex",
+                flexDirection: "column",
+                width: "90%",
+                "& div": {
+                    display: "flex",
+                    justifyContent: "space-between"
+                }
+            },
+            position: {
+                color: theme.palette.primary.light,
+                fontSize: 120,
+                lineHeight: "120px",
+                fontWeight: "bolder",
+                "&.centenas": {
+                    fontSize: 90,
+                    //lineHeight: "100px"
+                }
             }
         })
 );

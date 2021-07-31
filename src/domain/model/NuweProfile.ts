@@ -16,6 +16,7 @@ export type NuweProfile = {
     projectsOS: number,
     pins: number,
     country: string,
-    continent: string
+    continent: string,
+    global: number
 }
 

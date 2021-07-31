@@ -30,10 +30,19 @@ export default Adapter
 
 const NUWE_PROFILE: PersonalProfileDTO = {
     points: 6000,
-    hardSkills: [{name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}],
-    softSkills: [{name: "Teamwork", points: 4, topPoints: 5}, {name: "Comunicación", points: 4, topPoints: 5}, {name: "Lo que sea", points: 4, topPoints: 5}, {name: "Resolución problemas", points: 4, topPoints: 5}, {name: "Capacidad analítica", points: 4, topPoints: 5}, {name: "Capacidad analítica", points: 4, topPoints: 5}, {name: "Capacidad analítica", points: 4, topPoints: 5}, {name: "Capacidad analítica", points: 4, topPoints: 5}, {name: "Capacidad analítica", points: 4, topPoints: 5}, {name: "Capacidad analítica", points: 4, topPoints: 5}],
+    hardSkills: [{name: "Javascript", points: 1200, topPct: 10}, {name: "Java", points: 900, topPct: 10}, {name: "React", points: 900, topPct: 10}, {name: "Angular", points: 850, topPct: 10}, {name: "CSS3", points: 800, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}, {name: "Java", points: 1200, topPct: 10}],
+    softSkills: [{name: "Teamwork", points: 800, topPoints: 5}, {name: "Comunicación", points: 750, topPoints: 5}, {name: "Lo que sea que fuere", points: 300, topPoints: 5}, {name: "Resolución problemas", points: 275, topPoints: 5}], //{name: "Capacidad analítica", points: 4, topPoints: 5}, {name: "Capacidad analítica", points: 4, topPoints: 5}, {name: "Capacidad analítica", points: 4, topPoints: 5}],//, {name: "Capacidad analítica", points: 4, topPoints: 5}, {name: "Capacidad analítica", points: 4, topPoints: 5}, {name: "Capacidad analítica", points: 4, topPoints: 5}],
     rankingPosition: 17,
-    totalUsers: 2500
+    totalUsers: 2500,
+    //
+    position: 1,
+    country: "España",
+    europe: 157,
+    global: 2445,
+    hackathons: 12,
+    challenges: 56,
+    projectsOS: 3,
+    pins: 78
 }
 
 const PERSONAL_PROFILE: PersonalProfileDTO = {

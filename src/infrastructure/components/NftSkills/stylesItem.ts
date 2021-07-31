@@ -47,18 +47,39 @@ const useStylesItem = (offset: [number, number], x: number, y: number) => makeSt
             width: 75,
             overflowWrap: "break-word"
         },
-        skill: {
+        hardSkill: {
             display: "flex",
             alignItems: "center",
-            height: "40px",
+            height: "25px",
             gap: 0,
-            "& .hard": {
-                color: palette.primary.light,
-                filter: "brightness(2)"
-            },
-            "& .soft": {
-                color: palette.warning.light
-            }
+            color: palette.primary.light,
+                filter: "brightness(2)",
+                //alignItems: "flex-start",
+            // "& .hard": {
+            //     color: palette.primary.light,
+            //     filter: "brightness(2)",
+            //     alignItems: "flex-start"
+            // },
+            // "& .soft": {
+            //     color: palette.warning.light,
+            //     alignItems: "none"
+            // }
+        },
+        softSkill: {
+            display: "flex",
+            alignItems: "flex-start",
+            height: "25px",
+            gap: 0,
+            color: palette.warning.light,
+            // "& .hard": {
+            //     color: palette.primary.light,
+            //     filter: "brightness(2)",
+            //     alignItems: "flex-start"
+            // },
+            // "& .soft": {
+            //     color: palette.warning.light,
+            //     alignItems: "none"
+            // }
         }
     })
 });

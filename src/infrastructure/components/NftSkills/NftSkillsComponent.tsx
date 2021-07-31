@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import { useTheme, withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Tooltip from "@material-ui/core/Tooltip";
+import Divider from "@material-ui/core/Divider";
 
 const GreenTooltip = withStyles({
     tooltip: {
@@ -36,13 +37,13 @@ const StackItem = (props: IItemProps) => {
     const classes = useStylesItem(offset, x, y)();
     return (
         <Paper elevation={0} className={classes.absoluteCard}>
-            {nameHard !== "" && <div className={classes.skill}>
+            {nameHard !== "" && <div className={classes.hardSkill}>
                 <Typography className={`${classes.message} hard `}>{new Intl.NumberFormat(undefined, {useGrouping: true}).format(pointsHard)}</Typography>
                 <GreenTooltip title={nameHard} arrow>
                     <Card className={`${offset[0] !== 1000 ? classes.card : classes.cardEmpty}`} />
                 </GreenTooltip>
            </div>}
-            {nameSoft !== "" && <div className={classes.skill}>
+            {nameSoft !== "" && <div className={classes.softSkill}>
                 <Typography className={`${classes.message} soft `}>{new Intl.NumberFormat().format(pointsSoft)}</Typography>
                 <Typography className={`${classes.message} soft `}>{nameSoft}</Typography>
             </div>}
@@ -51,7 +52,6 @@ const StackItem = (props: IItemProps) => {
 }
 
 interface IProps {
-    title: string,
     hard: HardSkill[],
     soft: SoftSkill[]
 }
@@ -78,20 +78,24 @@ const NftSkills = (props: IProps) => {
     hard.forEach((v, i) => { 
         newArr.push({h: v});
         dataH.push(v.points);
+        dataS.push(0);
     });
     soft.forEach((v, i) => {
-        if (newArr[i])
+        if (newArr[i]) {
             newArr[i] = {h: newArr[i].h, s: v};
-        else
+            dataS[i] = v.points;
+        } else {
             newArr.push({s: v});
-        dataS.push(v.points);
+            dataH.push(0);
+            dataS.push(v.points);
+        }
     });
     const lengthMax =newArr.length;
     // const offsetX = (width - (notMobile ? 290 : 0)) / 2 - 50;
     const offsetX = 150; 
     // const radio = offsetX > 250 ? 250 : offsetX
     const radio = 160;
-    const penta = calcPentagon(5, radio/1.35);
+    const penta = calcPentagon(lengthMax, radio/1.35);
     // const offsetY = 70;
     const offsetY = 0;
     const height = lengthMax === 0
@@ -108,9 +112,27 @@ const NftSkills = (props: IProps) => {
             name: 'Soft',
             data: dataS,
         }],
+          
         options: {
+            legend: {
+                show: true,
+                position: "bottom" as "bottom",
+                labels: {
+                    colors: ['#FFFFFF']
+                }
+            },
+            yaxis: {
+                show: false
+            },
+            tooltip: {
+                enabled: false
+            },
             chart: {
-                height: 350,
+                toolbar:{
+                    show: false
+                },
+                height: 200,
+                width: 250,
                 type: type,
                 dropShadow: {
                     enabled: true,
@@ -119,17 +141,21 @@ const NftSkills = (props: IProps) => {
                     top: 1
                 }
             },
+            colors: ['#66DA26', '#FF9800', '#2E93fA', '#546E7A', '#E91E63'],
             title: {
                 text: ''
             },
             stroke: {
-                width: 2
+                width: 3
             },
             fill: {
                 opacity: 0.1
             },
+            
             markers: {
-                size: 0
+                size: 0,
+                strokeWidth: 0,
+                colors: ['#FFFFFF']
             },
             xaxis: {
                 categories: ["", "", "", "", ""] // ['2011', '2012', '2013', '2014', '2015', '2016']
@@ -139,18 +165,20 @@ const NftSkills = (props: IProps) => {
 console.log("DADA", hard, soft, dataH, dataS)
     return (
         <>
-            <Paper className={classes.skills} style={{ width: 300, backgroundColor: "transparent" }} variant="outlined" >
+            <Divider style={{backgroundColor: "white", opacity: .5, marginTop: 8}}/>
+            <Paper className={classes.skills} style={{ width: 200, backgroundColor: "transparent" }} variant="outlined" >
                 <ReactApexChart style={{
-                        width: radio,
+                        width: radio ,
                         // transform: `translate(
                         //     ${offsetX - (radio / 2)}px, 
                         //     ${offsetY + radio - 90}px
                         // )`
                         transform: `translate(
                             ${offsetX - (radio / 2) - 5}px, 
-                            0px
+                            -10px
                         )`,
-                        position: "absolute"
+                        position: "absolute",
+                        color: "white"
 
                     }} options={data.options} series={data.series} type="radar" height={310} />
                 {/* <img className={classes.pentagon}

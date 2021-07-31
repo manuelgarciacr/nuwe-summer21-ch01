@@ -1,4 +1,4 @@
-import { createRef, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { PersonalProfile } from "domain/model/PersonalProfile";
@@ -7,10 +7,11 @@ import { fetchPersonalProfile, selectPersonalProfile } from "../Profile/slices/p
 import { fetchNuweProfile, selectNuweProfile } from "../Profile/slices/nuweProfileSlice";
 import { fetchSpecialities, selectSpecialities } from "../Profile/slices/specialitySlice";
 import { fetchSpecialityLevels, selectSpecialityLevels } from "../Profile/slices/specialityLevelSlice";
-import { fetchCompanyTypes, selectCompanyTypes } from "../Profile/slices/companyTypeSlice";
+import { fetchCompanyTypes } from "../Profile/slices/companyTypeSlice";
 import { IdName } from "domain/model/IdName";
 import useStyles from "./styles";
 import NftSkills from "../NftSkills/NftSkillsComponent";
+import image2 from "../../assets/img/image2.png";
 
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
@@ -18,10 +19,11 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { useTheme } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Divider from "@material-ui/core/Divider";
 
 const NftCards = () => {
     const theme = useTheme();
-    const [isShown, setShown] = useState(true);
+    const [isShown, setShown] = useState(false);
     const classes = useStyles(); // new Map(...useStyles());
 
     const dispatch = useAppDispatch()
@@ -41,6 +43,7 @@ const NftCards = () => {
     
     const personalProfileError = useAppSelector(state => state.personalProfile.error)
     const nuweProfileError = useAppSelector(state => state.nuweProfile.error)
+
 
     const ok = Object.keys(personalProfile).length > 0 
         && Object.keys(nuweProfile).length > 0 
@@ -85,6 +88,8 @@ const NftCards = () => {
     else if (failed)
         return(<div className={classes.loadingError}>{personalProfileError}{nuweProfileError}</div>)
 
+    const centenas = nuweProfile.global > 99;
+    
     return (
         <Card onClick={() => setShown(!isShown)} className={classes.card}>
             <div className={classes.content + ` ${isShown ? "shown" : ""}`}>
@@ -93,51 +98,89 @@ const NftCards = () => {
                     <div>
                         <Avatar style={{position: "absolute"}} variant="rounded" sizes={"width: 70, width: 100"} className={classes.avatarFront} aria-label="avatar" src={personalProfile.avatarMedium}>
                         </Avatar>
+                        <Avatar style={{position: "absolute"}} variant="rounded" sizes={"width: 50, width: 50"} className={classes.emblemaFront} aria-label="avatar" src={image2}>
+                        </Avatar>
                         <div className={classes.inner}>
-                            <div style={{marginLeft: 80}}>
-                                <Typography variant="h6">{personalProfile.username}</Typography>
+                            <div style={{marginLeft: 65}}>
+                                <Typography variant="subtitle1">{personalProfile.username}</Typography>
                                 <Typography>
                                     {getName(personalProfile.speciality, specialities)} |&nbsp;
                                     {getName(personalProfile.specialityLevel, specialityLevels)}
                                 </Typography>
-                                <Typography variant="subtitle2">{personalProfile.job}</Typography>
+                                <Typography style={{right: 0, alignSelf: "flex-end"}} variant="subtitle2">{personalProfile.job}</Typography>
+                                <div style={{display: "flex", justifyContent: "flex-end", gap: 5, marginTop: ".2rem"}}>
+                                    <div style={{display: "flex", gap: 5, alignItems: "baseline"}}>
+                                        <Typography variant="subtitle1">{nuweProfile.position}º</Typography>
+                                        <Typography variant="subtitle2"> {nuweProfile.country}</Typography>
+                                    </div>
+                                    <div style={{display: "flex", gap: 5, alignItems: "baseline"}}>
+                                        <Typography variant="subtitle1">{nuweProfile.europe}º </Typography>
+                                        <Typography variant="subtitle2"> Gral. Europa</Typography>
+                                    </div> 
+                                </div>
                             </div>
-                            <Typography variant="h6">{personalProfile.username}</Typography>
-                            <Typography variant="h6">{personalProfile.username}</Typography>
-                                    
-                            <h2>Cozy apartment</h2>
-                            <div className="rating">
-                                Contenido
-                                Contenido
-                            </div>
-                            <NftSkills title={"El título"}
+                            <NftSkills
                                 hard={nuweProfile.hardSkills?.slice(0, 5) || []}
                                 soft={nuweProfile.softSkills?.slice(0, 5) || []}></NftSkills>
-                            {/* <label for="card1" class="button" aria-hidden="true">
-                                Details
-                            </label> */}
                         </div>
+                        <div className={classes.footer}>
+                            <div style={{height: 8}}> </div>
+                            <Divider style={{backgroundColor: "white", opacity: .5, marginTop: 8}}/>
+                            <div style={{display: "flex", gap: 5, flex: 1}}>
+                                <div style={{marginTop: 8, flex: 1, flexDirection: "column", justifyContent: "flex-start"}}>
+                                    <div>
+                                        <Typography variant="subtitle2">Hackathons</Typography>
+                                        <Typography variant="subtitle2">{nuweProfile.hackathons}</Typography>
+                                    </div>
+                                    <div>
+                                        <Typography variant="subtitle2">Challenges</Typography>
+                                        <Typography variant="subtitle2">{nuweProfile.challenges}</Typography>
+                                    </div>
+                                    <div>
+                                        <Typography variant="subtitle2">Proyectos OS</Typography>
+                                        <Typography variant="subtitle2">{nuweProfile.projectsOS}</Typography>
+                                    </div>
+                                    <div>
+                                        <Typography variant="subtitle2">Emblemas</Typography>
+                                        <Typography variant="subtitle2">{nuweProfile.pins}</Typography>
+                                    </div>
+                                </div>
+                                <div style={{flex: 1, justifyContent: "center"}}>
+                                    <Typography variant="h1" className={`${classes.position} ${centenas ? "centenas" : ""}`}>{nuweProfile.global}</Typography>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        
                     </div>
                 </CardContent>
                 <CardContent className={classes.back}>
                     <div style={{height: "100%"}}>
                         <Avatar style={{position: "absolute"}} variant="rounded" className={classes.avatarBack} aria-label="avatar" src={personalProfile.avatarFull}></Avatar>
                         <div className={classes.inner}>
-                            <div style={{marginLeft: 80}}>
-                                <Typography variant="h6">{personalProfile.username}</Typography>
-                                <Typography>
-                                    {getName(personalProfile.speciality, specialities)} |&nbsp;
-                                    {getName(personalProfile.specialityLevel, specialityLevels)}
-                                </Typography>
-                                <Typography variant="subtitle2">{personalProfile.job}</Typography>
+                            <Avatar style={{position: "absolute"}} variant="rounded" sizes={"width: 50, width: 50"} className={classes.emblemaBack} aria-label="avatar" src={image2}>
+                            </Avatar>
+                            <Avatar style={{position: "absolute"}} variant="rounded" sizes={"width: 50, width: 50"} className={`${classes.emblemaBack} emblema01`} aria-label="avatar" src={image2}>
+                            </Avatar>
+                            <Avatar style={{position: "absolute"}} variant="rounded" sizes={"width: 50, width: 50"} className={`${classes.emblemaBack} emblema02`} aria-label="avatar" src={image2}>
+                            </Avatar>
+                            <Typography style={{marginTop: "-1em"}} variant="subtitle1">{personalProfile.username}</Typography>
+                            <Typography>
+                                {getName(personalProfile.speciality, specialities)} |&nbsp;
+                                {getName(personalProfile.specialityLevel, specialityLevels)}
+                            </Typography>
+                            <Typography style={{right: 0, alignSelf: "flex-end"}} variant="subtitle2">{personalProfile.job}</Typography>
+                            <div style={{display: "flex", justifyContent: "flex-end", gap: 5, marginTop: "10rem"}}>
+                                <div style={{display: "flex", gap: 5, alignItems: "baseline"}}>
+                                    <Typography variant="subtitle1">{nuweProfile.position}º</Typography>
+                                    <Typography variant="subtitle2"> {nuweProfile.country}</Typography>
+                                </div>
+                                <div style={{display: "flex", gap: 5, alignItems: "baseline"}}>
+                                    <Typography variant="subtitle1">{nuweProfile.europe}º </Typography>
+                                    <Typography variant="subtitle2"> Gral. Europa</Typography>
+                                </div> 
                             </div>
-                            <Typography variant="h6">{personalProfile.username}</Typography>
-                            <Typography variant="h6">{personalProfile.username}</Typography>
-                                    
-                            <QRCode className={classes.qr} size={200} bgColor={"#000000ff"} fgColor={theme.palette.primary.light} value="http://facebook.github.io/react/" />
-                            {/* <label for="card1" class="button" aria-hidden="true">
-                                Details
-                            </label> */}
+                            <QRCode className={classes.qr} size={200} bgColor={"#000000ff"} fgColor={theme.palette.primary.light} value={"https://nuwe.io/users/" + personalProfile.username} />
                         </div>
                     </div>
                 </CardContent>

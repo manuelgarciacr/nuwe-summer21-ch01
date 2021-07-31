@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
             },
             [theme.breakpoints.up("sm")]: {
                 flexDirection: "row"
-            }        
+            }
         },
     })
 );

@@ -2,7 +2,7 @@
 import Adapter from "../adapters/jsonserverAdapter";
 import { PersonalProfile } from "domain/model/PersonalProfile";
 
-export interface PersonalProfileDTO {}
+export interface PersonalProfileDTO extends PersonalProfile{}
 
 export interface IPersonalProfile {
     get: <T>(url: string) => Promise<{status: number, data: T}>;

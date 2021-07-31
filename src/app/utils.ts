@@ -17,7 +17,7 @@ export const getPeriod = (from: Date | string, to: Date | string) => {
 
     if (Math.abs(time) <= 60 * 1000)
         return "ahora";
-    if (time > 0) 
+    if (time > 0)
         res = "hace ";
     else
         res = "dentro de ";

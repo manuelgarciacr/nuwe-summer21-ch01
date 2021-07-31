@@ -1,7 +1,7 @@
 import { IdName } from "domain/model/IdName";
 import Adapter from "../adapters/jsonserverAdapter";
 
-export interface SpecialityLevelDTO {}
+export interface SpecialityLevelDTO extends IdName {}
 
 export interface ISpecialityLevel {
     get: <T>(url: string) => Promise<{status: number, data: T}>;

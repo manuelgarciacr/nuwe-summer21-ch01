@@ -12,13 +12,11 @@ const useStylesItem = (offset: [number, number], x: number, y: number) => makeSt
             height: 100,
             padding: 0,
             margin: 0,
-            // backgroundColor: palette.secondary.dark,
             backgroundImage: `url(${Glyphs})`,
             backgroundPositionX: -116 * offset[0],
             backgroundPositionY: -182 * offset[1],
             transform: "scale(40%) translateX(-55px)",
             flexShrink: 0,
-            //color: palette.primary.main,
             backgroundColor: "transparent",
             filter: "brightness(2)"
         },
@@ -53,17 +51,7 @@ const useStylesItem = (offset: [number, number], x: number, y: number) => makeSt
             height: "25px",
             gap: 0,
             color: palette.primary.light,
-                filter: "brightness(2)",
-                //alignItems: "flex-start",
-            // "& .hard": {
-            //     color: palette.primary.light,
-            //     filter: "brightness(2)",
-            //     alignItems: "flex-start"
-            // },
-            // "& .soft": {
-            //     color: palette.warning.light,
-            //     alignItems: "none"
-            // }
+            filter: "brightness(2)",
         },
         softSkill: {
             display: "flex",
@@ -71,15 +59,6 @@ const useStylesItem = (offset: [number, number], x: number, y: number) => makeSt
             height: "25px",
             gap: 0,
             color: palette.warning.light,
-            // "& .hard": {
-            //     color: palette.primary.light,
-            //     filter: "brightness(2)",
-            //     alignItems: "flex-start"
-            // },
-            // "& .soft": {
-            //     color: palette.warning.light,
-            //     alignItems: "none"
-            // }
         }
     })
 });

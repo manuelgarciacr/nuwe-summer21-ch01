@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
         jutifyContent: "center",
-        //overflowX: "hidden",
+        overflowX: "hidden",
         width: "100vw",
     },
     container: {
@@ -44,7 +44,9 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 0,
         position: "relative",
         transition: "boxShadow 4s ease-out",
-        animation: `$spin 2s linear infinite`,
+        [theme.breakpoints.up("sm")]: {
+            animation: `$spin 2s linear infinite`
+        },
         "& .avatar": {
             bottom: 0,
             height: "80%",
@@ -83,7 +85,9 @@ const useStyles = makeStyles((theme) => ({
         margin: 0,
         marginTop: "20px",
         transition: "boxShadow 4s ease-out",
-        animation: `$spin 2s linear infinite`,
+        [theme.breakpoints.up("sm")]: {
+            animation: `$spin 2s linear infinite`
+        },
         "& $content": {
             position: "relative",
             width: "100%",

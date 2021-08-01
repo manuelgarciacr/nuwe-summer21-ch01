@@ -152,7 +152,7 @@ console.log("DADA", hard, soft, dataH, dataS)
     return (
         <>
             <Divider style={{backgroundColor: "white", opacity: .5, marginTop: 8}}/>
-            <Paper className={classes.skills} style={{ width: 200, backgroundColor: "transparent" }} variant="outlined" >
+            <Paper className={classes.skills} style={{ width: 200, backgroundColor: "transparent" }} >
                 <ReactApexChart style={{
                         width: radio ,
                         // transform: `translate(
